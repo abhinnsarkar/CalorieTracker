@@ -1,41 +1,23 @@
-import {
-    AppBar,
-    Toolbar,
-    Typography,
-    Box,
-    Container,
-    Button,
-} from "@mui/material";
+import React from "react";
+import { Button } from "@/components/ui/button";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 export default function Header() {
     return (
-        <AppBar
-            position="sticky"
-            sx={{
-                background: "rgba(255, 255, 255, 0.1)",
-                backdropFilter: "blur(10px)",
-                boxShadow: "none",
-                borderBottom: "1px solid rgba(255, 255, 255, 0.2)",
-            }}
-        >
-            <Container maxWidth="lg">
-                <Toolbar>
-                    <Typography
-                        variant="h6"
-                        sx={{ flexGrow: 1, fontWeight: 600, color: "#ffffff" }}
-                    >
-                        Calorie Tracker
-                    </Typography>
-                    <Box>
+        <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background/60 border-b border-border/50 bg">
+            <div className="container mx-auto px-4">
+                <div className="flex items-center justify-between h-16">
+                    <div className="flex items-center space-x-4">
+                        <span className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
+                            IndoCalories
+                        </span>
+                    </div>
+                    <div className="flex items-center space-x-4">
                         <SignedOut>
                             <SignInButton>
                                 <Button
-                                    variant="outlined"
-                                    sx={{
-                                        color: "#ffffff",
-                                        borderColor: "rgba(255, 255, 255, 0.5)",
-                                    }}
+                                    variant="outline"
+                                    className="text-sm border-blue-400/30 text-blue-100 hover:bg-blue-950/50"
                                 >
                                     Sign In
                                 </Button>
@@ -44,9 +26,9 @@ export default function Header() {
                         <SignedIn>
                             <UserButton afterSignOutUrl="/" />
                         </SignedIn>
-                    </Box>
-                </Toolbar>
-            </Container>
-        </AppBar>
+                    </div>
+                </div>
+            </div>
+        </header>
     );
 }

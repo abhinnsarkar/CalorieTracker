@@ -1,12 +1,12 @@
 // import type { Metadata } from "next";
 // import { Geist, Geist_Mono } from "next/font/google";
-// import {
-//     ClerkProvider,
-//     SignInButton,
-//     SignedIn,
-//     SignedOut,
-//     UserButton,
-// } from "@clerk/nextjs";
+import {
+    // ClerkProvider,
+    // SignInButton,
+    SignedIn,
+    // SignedOut,
+    // UserButton,
+} from "@clerk/nextjs";
 // import "./globals.css";
 
 // const geistSans = Geist({
@@ -80,7 +80,9 @@ export default function RootLayout({
                     className={`${geistSans.variable} ${geistMono.variable} antialiased`}
                 >
                     <Header /> {/* Include the header here */}
-                    <main>{children}</main>{" "}
+                    <SignedIn>
+                        <main>{children}</main>{" "}
+                    </SignedIn>
                     {/* Ensure children are displayed below the header */}
                 </body>
             </html>
