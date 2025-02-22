@@ -21,6 +21,7 @@
 
         --muted: 223 47% 11%;
         --muted-foreground: 215.4 16.3% 56.9%;
+        --button-complement: #1a1f2c;
 
         --accent: 216 34% 17%;
         --accent-foreground: 210 40% 98%;
@@ -49,12 +50,59 @@
 }
 
 /* globals.css */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 .hover-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--accent-30);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    backdrop-blur: 5px;
+    animation: fadeIn 0.5s ease-out;
+    padding: 1rem;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.4),
+        0 0 8px rgba(255, 255, 255, 0.3); /* Thinner illuminated outline */
 }
 
 .hover-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1),
-        0 0 15px rgba(255, 255, 255, 0.6);
+    transform: scale(1.025);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5),
+        0 0 15px rgba(255, 255, 255, 0.4); /* Thicker illuminated outline on hover */
+}
+
+.hover-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accent-30); /* Keep your custom accent color */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    color: white; /* Keeps text color consistent */
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.4),
+        0 0 8px rgba(255, 255, 255, 0.3); /* Subtle default glow */
+}
+
+.hover-btn:hover {
+    transform: scale(1.025);
+    color: var(--button-complement);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.8),
+        0 0 20px rgba(255, 255, 255, 0.6); /* Stronger glowing outline on hover */
+    background-color: var(--accent-30); /* Prevents background from changing */
 }
