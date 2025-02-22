@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model foods {
+  food_id          String   @id @db.VarChar(255)
+  food_name        String   @db.VarChar(100)
+  calories         Int
+  protein          Decimal? @db.Decimal(6, 2)
+  carbs            Decimal? @db.Decimal(6, 2)
+  fats             Decimal? @db.Decimal(6, 2)
+  fiber            Decimal? @db.Decimal(6, 2)
+  sugar            Decimal? @db.Decimal(6, 2)
+  sodium           Decimal? @db.Decimal(6, 2)
+  potassium        Decimal? @db.Decimal(6, 2)
+  iron             Decimal? @db.Decimal(6, 2)
+  portion_size     String?  @db.VarChar(50)
+  default_quantity Decimal? @db.Decimal(5, 2)
+  description      String?
+  instructions     String?
+  ingredients      String?
+}
+
+model users {
+  user_id              String         @id @db.VarChar(255)
+  dob                  DateTime       @db.Date
+  height_cm            Decimal        @db.Decimal(5, 2)
+  weight_kg            Decimal        @db.Decimal(5, 2)
+  gender               gender_enum
+  objective            objective_enum
+  maintenance_calories Int?           @default(0)
+}
+
+enum gender_enum {
+  male
+  female
+}
+
+enum objective_enum {
+  bulking
+  cutting
+  maintain
+}
