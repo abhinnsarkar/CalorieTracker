@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import Link from "next/link";
 
 export default function Header() {
     return (
@@ -8,9 +9,11 @@ export default function Header() {
             <div className="container mx-auto px-4">
                 <div className="flex items-center justify-between h-16">
                     <div className="flex items-center space-x-4">
-                        <span className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
-                            IndoCalories
-                        </span>
+                        <Link href={"/"}>
+                            <span className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
+                                BrownBite
+                            </span>
+                        </Link>
                     </div>
                     <div className="flex items-center space-x-4">
                         <SignedOut>
