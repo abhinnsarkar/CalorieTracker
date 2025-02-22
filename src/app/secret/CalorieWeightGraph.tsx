@@ -15,8 +15,8 @@ import {
     CardContent,
     CardDescription,
     CardFooter,
-    CardHeader,
-    CardTitle,
+    // CardHeader,
+    // CardTitle,
 } from "@/components/ui/card";
 import {
     ChartConfig,
@@ -47,10 +47,13 @@ const chartConfig = {
 export default function CalorieWeightGraph() {
     return (
         <Card className="hover-card">
-            <CardHeader>
-                <CardTitle>Progress Tracker</CardTitle>
-                <CardDescription>Calories and Weight Over Time</CardDescription>
-            </CardHeader>
+            {/* <CardHeader> */}
+            {/* <CardTitle></CardTitle> */}
+            <h2 className="text-lg font-semibold mb-3 text-blue-100">
+                Progress Tracker
+            </h2>
+            <CardDescription>Calories and Weight Over Time</CardDescription>
+            {/* </CardHeader> */}
             <CardContent>
                 <ChartContainer config={chartConfig}>
                     <ResponsiveContainer width="100%" height={300}>
