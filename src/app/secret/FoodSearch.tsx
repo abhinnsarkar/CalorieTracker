@@ -3,6 +3,10 @@ import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import Link from "next/link";
+// import { prisma } from "@/lib/db";
 
 const mockFoods = [
     "Apple",
@@ -21,15 +25,24 @@ export default function FoodSearch() {
     const [search, setSearch] = useState("");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+    // const foodChoices = await prisma.foods.findMany();
+
     const filteredFoods = mockFoods.filter((food) =>
         food.toLowerCase().includes(search.toLowerCase())
     );
 
     return (
-        <Card className=" hover-card p-4 h-[calc(100vh-96px)] bg-accent/30 backdrop-blur-md border border-white/10 animate-fade-in flex flex-col">
+        <Card className="hover-card h-[calc(100vh-96px)]">
             <h2 className="text-lg font-semibold mb-3 text-blue-100">
                 Food Search
             </h2>
+
+            <Link className=" w-full my-2" href="/foods">
+                <Button className="hover-btn w-full">
+                    View All Foods <OpenInNewIcon />
+                </Button>
+            </Link>
+
             <div className="relative flex-grow flex flex-col min-h-0">
                 <div>
                     <Input
