@@ -33,7 +33,7 @@ export default function DailyTracking() {
     const caloriePercentage = (currentCalories / calorieGoal) * 100;
 
     return (
-        <Card className="hover-card p-4 h-[calc(100vh-96px)] bg-accent/30 backdrop-blur-md border border-white/10 animate-fade-in flex flex-col">
+        <Card className="hover-card h-[calc(100vh-96px)]">
             <h2 className="text-lg font-semibold mb-3 text-blue-100">
                 Daily Progress
             </h2>
