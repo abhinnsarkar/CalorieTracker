@@ -23,7 +23,7 @@
         --muted-foreground: 215.4 16.3% 56.9%;
         --button-complement: #1a1f2c;
 
-        --accent: 216 34% 17%;
+        --accent: 216 34% 17%; /* Keep your existing accent color */
         --accent-foreground: 210 40% 98%;
 
         --destructive: 0 84.2% 60.2%;
@@ -49,7 +49,6 @@
     }
 }
 
-/* globals.css */
 @keyframes fadeIn {
     0% {
         opacity: 0;
@@ -61,31 +60,32 @@
     }
 }
 
+/* hover-card styles */
 .hover-card {
     display: flex;
     flex-direction: column;
-    background-color: var(--accent-30);
+    background-color: var(--accent); /* Solid background */
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    backdrop-blur: 5px;
     animation: fadeIn 0.5s ease-out;
     padding: 1rem;
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.4),
-        0 0 8px rgba(255, 255, 255, 0.3); /* Thinner illuminated outline */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4),
+        0 0 10px rgba(255, 255, 255, 0.3); /* Thinner illuminated outline */
 }
 
 .hover-card:hover {
     transform: scale(1.025);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5),
-        0 0 15px rgba(255, 255, 255, 0.4); /* Thicker illuminated outline on hover */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4),
+        0 0 15px rgba(255, 255, 255, 0.3); /* Thinner illuminated outline */
 }
 
+/* hover-btn styles */
 .hover-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--accent-30); /* Keep your custom accent color */
+    background-color: var(--accent); /* Keep your custom accent color */
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     padding: 0.75rem 1.5rem;
@@ -93,16 +93,113 @@
     text-align: center;
     color: white; /* Keeps text color consistent */
     cursor: pointer;
-    backdrop-filter: blur(5px);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.4),
-        0 0 8px rgba(255, 255, 255, 0.3); /* Subtle default glow */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6),
+        0 0 10px rgba(255, 255, 255, 0.5); /* Increased initial glow */
 }
 
 .hover-btn:hover {
     transform: scale(1.025);
     color: var(--button-complement);
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.8),
-        0 0 20px rgba(255, 255, 255, 0.6); /* Stronger glowing outline on hover */
-    background-color: var(--accent-30); /* Prevents background from changing */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8),
+        0 0 15px rgba(255, 255, 255, 0.6); /* Stronger glowing outline on hover */
+}
+
+/* hover-dialog styles */
+.hover-dialog {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--accent); /* Solid background color */
+    backdrop-filter: blur(
+        10px
+    ); /* Apply backdrop blur for frosted glass effect */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    transition: box-shadow 0.2s ease-in-out;
+    animation: fadeIn 0.5s ease-out;
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6),
+        0 0 10px rgba(255, 255, 255, 0.5); /* Stronger initial glow */
+}
+
+/* Hover effect for the dialog - glowing border */
+.hover-dialog:hover {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6),
+        0 0 15px rgba(255, 255, 255, 0.5); /* Thicker glowing outline on hover */
+    background-color: var(--accent); /* Keep the same accent color on hover */
+}
+
+/* hover-menu-item styles to look like hover-btn */
+.hover-menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accent); /* Keep your custom accent color */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem; /* Same padding as the button */
+    font-weight: 600;
+    text-align: center;
+    color: white; /* Keep text color consistent */
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6),
+        0 0 10px rgba(255, 255, 255, 0.5); /* Same glowing effect as the button */
+}
+
+/* Hover effect for the menu, same as hover-btn */
+.hover-menu-item:hover {
+    transform: scale(1.025); /* Same scaling effect */
+    color: var(--button-complement); /* Same color change on hover */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8),
+        0 0 15px rgba(255, 255, 255, 0.6); /* Stronger glowing effect */
+    background-color: var(--accent); /* Keep the same accent color */
+}
+
+/* Remove backdrop-filter to prevent frosted glass effect */
+.hover-menu-item {
+    backdrop-filter: none; /* No blur effect, so it matches the button appearance */
+}
+
+/* hover-card-input styles */
+.hover-card-input {
+    /* background-color: hsl(var(--input)); Correct HSL syntax */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    color: var(--foreground);
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4),
+        0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.hover-card-input:hover {
+    transform: scale(1.025);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6),
+        0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.hover-card-input:focus,
+.hover-card-input:active {
+    transform: scale(1.025);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6),
+        0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.hover-card-input:not(:focus):not(:hover) {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4),
+        0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
 }
