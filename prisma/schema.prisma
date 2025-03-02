@@ -27,14 +27,15 @@ model foods {
 }
 
 model users {
-  user_id              String              @id @db.VarChar(255)
-  dob                  DateTime            @db.Date
-  height_cm            Decimal             @db.Decimal(5, 2)
-  weight_kg            Decimal             @db.Decimal(5, 2)
-  gender               gender_enum
-  objective            objective_enum
-  activity_level       activity_level_enum // Make sure this is defined here
-  maintenance_calories Int?                @default(0)
+  user_id              String    @id
+  dob                  DateTime?
+  height_cm            Float?
+  weight_kg            Float?
+  gender               String?
+  objective            String?
+  activity_level       String?
+  maintenance_calories Int?
+  profile_completed    Boolean   @default(false) // new column!
 }
 
 enum gender_enum {

@@ -2,6 +2,8 @@
 
 import React from "react";
 import { TrendingUp } from "lucide-react";
+// import { Separator } from "@/components/ui/separator";
+
 import {
     LineChart,
     Line,
@@ -24,6 +26,8 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart";
+import UpdateProfile from "../components/UpdateProfile";
+import BodyStats from "../components/BodyStats";
 
 const data = [
     { date: "Mon", calories: 2100, weight: 70 },
@@ -46,67 +50,87 @@ const chartConfig = {
 
 export default function CalorieWeightGraph() {
     return (
-        <Card className="hover-card">
-            {/* <CardHeader> */}
-            {/* <CardTitle></CardTitle> */}
-            <h2 className="text-lg font-semibold mb-3 text-blue-100">
-                Progress Tracker
-            </h2>
-            <CardDescription>Calories and Weight Over Time</CardDescription>
-            {/* </CardHeader> */}
-            <CardContent>
-                <ChartContainer config={chartConfig}>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <LineChart
-                            data={data}
-                            margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
-                        >
-                            <CartesianGrid
-                                vertical={false}
-                                strokeDasharray="3 3"
-                            />
-                            <XAxis
-                                dataKey="date"
-                                tickLine={false}
-                                axisLine={false}
-                                tickMargin={8}
-                            />
-                            <YAxis />
-                            <ChartTooltip
-                                cursor={false}
-                                content={<ChartTooltipContent />}
-                            />
-                            <Line
-                                dataKey="calories"
-                                type="monotone"
-                                stroke="var(--graph-1)"
-                                strokeWidth={2}
-                                dot={false}
-                            />
-                            <Line
-                                dataKey="weight"
-                                type="monotone"
-                                stroke="var(--graph-2)"
-                                strokeWidth={2}
-                                dot={false}
-                            />
-                        </LineChart>
-                    </ResponsiveContainer>
-                </ChartContainer>
-            </CardContent>
-            <CardFooter>
-                <div className="flex w-full items-start gap-2 text-sm">
-                    <div className="grid gap-2">
-                        <div className="flex items-center gap-2 font-medium leading-none">
-                            Trending up by 5.2% this week{" "}
-                            <TrendingUp className="h-4 w-4" />
+        <>
+            <Card className="hover-card">
+                {/* <CardHeader> */}
+                {/* <CardTitle></CardTitle> */}
+
+                {/* <Separator /> */}
+
+                <Card className="hover-card">
+                    <h2 className="text-lg font-semibold mb-3 text-blue-100">
+                        Progress Tracker
+                    </h2>
+                    <CardDescription>
+                        Calories and Weight Over Time
+                    </CardDescription>
+                    {/* </CardHeader> */}
+                    <CardContent>
+                        <ChartContainer config={chartConfig}>
+                            <ResponsiveContainer width="100%" height={300}>
+                                <LineChart
+                                    data={data}
+                                    margin={{
+                                        top: 5,
+                                        right: 20,
+                                        bottom: 5,
+                                        left: 0,
+                                    }}
+                                >
+                                    <CartesianGrid
+                                        vertical={false}
+                                        strokeDasharray="3 3"
+                                    />
+                                    <XAxis
+                                        dataKey="date"
+                                        tickLine={false}
+                                        axisLine={false}
+                                        tickMargin={8}
+                                    />
+                                    <YAxis />
+                                    <ChartTooltip
+                                        cursor={false}
+                                        content={<ChartTooltipContent />}
+                                    />
+                                    <Line
+                                        dataKey="calories"
+                                        type="monotone"
+                                        stroke="var(--graph-1)"
+                                        strokeWidth={2}
+                                        dot={false}
+                                    />
+                                    <Line
+                                        dataKey="weight"
+                                        type="monotone"
+                                        stroke="var(--graph-2)"
+                                        strokeWidth={2}
+                                        dot={false}
+                                    />
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </ChartContainer>
+                    </CardContent>
+                    <CardFooter>
+                        <div className="flex w-full items-start gap-2 text-sm">
+                            <div className="grid gap-2">
+                                <div className="flex items-center gap-2 font-medium leading-none">
+                                    Trending up by 5.2% this week{" "}
+                                    <TrendingUp className="h-4 w-4" />
+                                </div>
+                                <div className="flex items-center gap-2 leading-none text-muted-foreground">
+                                    Tracking your calorie intake and weight
+                                    changes
+                                </div>
+                            </div>
                         </div>
-                        <div className="flex items-center gap-2 leading-none text-muted-foreground">
-                            Tracking your calorie intake and weight changes
-                        </div>
-                    </div>
-                </div>
-            </CardFooter>
-        </Card>
+                    </CardFooter>
+                </Card>
+
+                <Card className="hover-card">
+                    <BodyStats />
+                    <UpdateProfile />
+                </Card>
+            </Card>
+        </>
     );
 }

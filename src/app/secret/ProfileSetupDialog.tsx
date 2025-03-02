@@ -1,5 +1,8 @@
-"use client";
-import { useState, useEffect } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
@@ -8,102 +11,160 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+
 import GenderDropdown from "../components/GenderDropdown";
 import ObjectiveDropdown from "../components/ObjectiveDropdown";
 import BirthdayPicker from "../components/BirthdayPicker";
 import ActivityLevelPicker from "../components/ActivityLevelPicker";
-// import { Label } from "@/components/ui/label";
-import HeightInput from "../components/HeightInput"; // Import HeightInput component
-import WeightInput from "../components/WeightInput"; // Import WeightInput component
+import HeightInput from "../components/HeightInput";
+import WeightInput from "../components/WeightInput";
+import { createUser } from "../actions/actions";
+
+// Define the form schema with Zod
+const formSchema = z.object({
+    gender: z.string().nonempty("Gender is required"),
+    objective: z.string().nonempty("Objective is required"),
+    birthday: z.date().optional(),
+    height: z.string().nonempty("Height is required"),
+    weight: z.string().nonempty("Weight is required"),
+    activityLevel: z.string().nonempty("Activity level is required"),
+});
+
+type FormSchema = z.infer<typeof formSchema>;
 
 export default function ProfileSetupDialog() {
-    const [isOpen, setIsOpen] = useState(true);
-    const [selectedGender, setSelectedGender] = useState<string>("");
-    const [selectedObjective, setSelectedObjective] = useState<string>("");
-    const [birthday, setBirthday] = useState<Date | undefined>(undefined);
-    const [weight, setWeight] = useState<string>("");
-    const [height, setHeight] = useState<string>("");
-    const [selectedActivityLevel, setSelectedActivityLevel] =
-        useState<string>("");
-    const [isFormValid, setIsFormValid] = useState(false);
+    const form = useForm<FormSchema>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            gender: "",
+            objective: "",
+            birthday: undefined,
+            height: "",
+            weight: "",
+            activityLevel: "",
+        },
+        mode: "onChange",
+    });
 
-    useEffect(() => {
-        const formValid =
-            selectedGender !== "" &&
-            selectedObjective !== "" &&
-            birthday !== undefined &&
-            height !== "" &&
-            weight !== "" &&
-            selectedActivityLevel !== "";
-        setIsFormValid(formValid);
-    }, [
-        selectedGender,
-        selectedObjective,
-        birthday,
-        height,
-        weight,
-        selectedActivityLevel,
-    ]);
+    // Custom submit handler for the form
+    const handleFormSubmit = async (event: React.FormEvent) => {
+        event.preventDefault(); // Prevent the default form submission
 
-    const handleSubmit = () => {
-        if (isFormValid) {
-            console.log("Gender:", selectedGender);
-            console.log("Objective:", selectedObjective);
-            console.log(
-                "Birthday:",
-                birthday ? birthday.toDateString() : "Not set"
-            );
-            console.log("Height:", height);
-            console.log("Weight:", weight);
-            console.log("Activity Level:", selectedActivityLevel);
-            setIsOpen(false);
+        // Get all form values from react-hook-form
+        const formValues = form.getValues();
+        console.log("Form Data:", formValues);
+
+        const formObj: Record<string, string | Date | undefined> = {
+            gender: formValues.gender,
+            objective: formValues.objective,
+            birthday: formValues.birthday,
+            height: formValues.height,
+            weight: formValues.weight,
+            activityLevel: formValues.activityLevel,
+        };
+
+        // Now you can loop over formObj and append to FormData
+        const formData = new FormData();
+        for (const key in formObj) {
+            const value = formObj[key];
+
+            if (value !== undefined) {
+                // Check if the value is a Date object
+                if (value instanceof Date) {
+                    formData.append(key, value.toISOString()); // Convert Date to ISO string
+                } else {
+                    formData.append(key, value); // Append the value (string or other valid types)
+                }
+            }
         }
-    };
 
-    const handleOpenChange = (open: boolean) => {
-        if (!open) {
-            return;
-        }
-        setIsOpen(open);
+        console.log("Converted JSON:", JSON.stringify(formObj));
+
+        // Now you can pass the formData to createUser
+        await createUser(formData);
     };
 
     return (
-        <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-            <DialogContent className="sm:max-w-[425px] hover-dialog bg-white p-4 shadow-lg backdrop-blur-none">
+        <Dialog open={true}>
+            <DialogContent className="sm:max-w-[425px] hover-dialog bg-white p-4 shadow-lg">
                 <DialogHeader>
-                    <DialogTitle>Edit profile</DialogTitle>
-                    <DialogDescription>Update your profile</DialogDescription>
+                    <DialogTitle>Complete Your Profile</DialogTitle>
+                    <DialogDescription>
+                        Fill in your details to set up your profile.
+                    </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <GenderDropdown
-                        selectedGender={selectedGender}
-                        setSelectedGender={setSelectedGender}
-                    />
-                    <ObjectiveDropdown
-                        selectedObjective={selectedObjective}
-                        setSelectedObjective={setSelectedObjective}
-                    />
-                    <BirthdayPicker date={birthday} setDate={setBirthday} />
-                    <ActivityLevelPicker
-                        selectedActivityLevel={selectedActivityLevel}
-                        setSelectedActivityLevel={setSelectedActivityLevel}
-                    />
 
-                    {/* Use the custom HeightInput and WeightInput components */}
-                    <HeightInput height={height} setHeight={setHeight} />
-                    <WeightInput weight={weight} setWeight={setWeight} />
-                </div>
-                <DialogFooter>
-                    <Button
-                        className="hover-btn"
-                        type="button"
-                        onClick={handleSubmit}
-                        disabled={!isFormValid}
+                <Form {...form}>
+                    <form
+                        onSubmit={handleFormSubmit} // Handle form submission with custom function
+                        className="space-y-4"
                     >
-                        Complete Profile Setup
-                    </Button>
-                </DialogFooter>
+                        <GenderDropdown
+                            selectedGender={form.watch("gender")}
+                            setSelectedGender={(gender) =>
+                                form.setValue("gender", gender, {
+                                    shouldValidate: true,
+                                })
+                            }
+                        />
+
+                        <ObjectiveDropdown
+                            selectedObjective={form.watch("objective")}
+                            setSelectedObjective={(objective) =>
+                                form.setValue("objective", objective, {
+                                    shouldValidate: true,
+                                })
+                            }
+                        />
+
+                        <BirthdayPicker
+                            date={form.watch("birthday")}
+                            setDate={(date) =>
+                                form.setValue("birthday", date, {
+                                    shouldValidate: true,
+                                })
+                            }
+                        />
+
+                        <ActivityLevelPicker
+                            selectedActivityLevel={form.watch("activityLevel")}
+                            setSelectedActivityLevel={(activityLevel) =>
+                                form.setValue("activityLevel", activityLevel, {
+                                    shouldValidate: true,
+                                })
+                            }
+                        />
+
+                        <HeightInput
+                            height={form.watch("height")}
+                            setHeight={(height) =>
+                                form.setValue("height", height, {
+                                    shouldValidate: true,
+                                })
+                            }
+                        />
+
+                        <WeightInput
+                            weight={form.watch("weight")}
+                            setWeight={(weight) =>
+                                form.setValue("weight", weight, {
+                                    shouldValidate: true,
+                                })
+                            }
+                        />
+
+                        <DialogFooter>
+                            <Button
+                                type="submit"
+                                disabled={!form.formState.isValid}
+                                className="hover-btn"
+                            >
+                                Complete Profile Setup
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </Form>
             </DialogContent>
         </Dialog>
     );

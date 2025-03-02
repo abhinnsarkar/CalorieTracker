@@ -35,12 +35,6 @@ const ObjectiveDropdown = ({
                 <DropdownMenuContent className="w-56">
                     <DropdownMenuItem
                         className="hover-menu-item"
-                        onClick={() => setSelectedObjective("Bulking")}
-                    >
-                        Bulking
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                        className="hover-menu-item"
                         onClick={() => setSelectedObjective("Cutting")}
                     >
                         Cutting
@@ -50,6 +44,12 @@ const ObjectiveDropdown = ({
                         onClick={() => setSelectedObjective("Maintain")}
                     >
                         Maintain
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                        className="hover-menu-item"
+                        onClick={() => setSelectedObjective("Bulking")}
+                    >
+                        Bulking
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>

@@ -195,6 +195,19 @@
         0 0 10px rgba(255, 255, 255, 0.3);
 }
 
+/* Glowing white separator styles */
+.glowing-separator {
+    background-color: transparent; /* Make the background transparent so glow shows */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6),
+        0 0 15px rgba(255, 255, 255, 0.3); /* Glowing white effect */
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.glowing-separator:hover {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
+        0 0 30px rgba(255, 255, 255, 0.6); /* Stronger glowing effect on hover */
+}
+
 @layer base {
     * {
         @apply border-border outline-ring/50;
