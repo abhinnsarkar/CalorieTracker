@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { getUserCurrentNutritionStats } from "../actions/actions";
 
 const MacroProgress = ({
     label,
@@ -27,13 +28,40 @@ const MacroProgress = ({
     </div>
 );
 
+interface NutritionStatsInterface {
+    maintenance_calories: number | null;
+}
+
 export default function DailyTracking() {
-    const calorieGoal = 2000;
+    const [nutritionStats, setNutritionStats] =
+        useState<NutritionStatsInterface | null>(null);
+
+    useEffect(() => {
+        // Fetch the body stats when the component is mounted
+        const fetchNutritionStats = async () => {
+            const data = await getUserCurrentNutritionStats();
+
+            if (data) {
+                // Resolve promises for activity_level and objective
+
+                // Update the state with resolved values
+                setNutritionStats({
+                    maintenance_calories: data.maintenance_calories,
+                });
+            }
+        };
+
+        fetchNutritionStats();
+    }, []); // Empty dependency array ensures this runs once when the component
+
+    const calorieGoal = nutritionStats?.maintenance_calories;
     const currentCalories = 1450;
-    const caloriePercentage = (currentCalories / calorieGoal) * 100;
+    const caloriePercentage = calorieGoal
+        ? (currentCalories / calorieGoal) * 100
+        : 0; // Default to 0% if calorieGoal is null or undefined
 
     return (
-        <Card className="hover-card h-[calc(100vh-96px)]">
+        <Card className="hover-card h-full">
             <h2 className="text-lg font-semibold mb-3 text-blue-100">
                 Daily Progress
             </h2>

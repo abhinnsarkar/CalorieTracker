@@ -57,7 +57,7 @@ export default function CalorieWeightGraph() {
 
                 {/* <Separator /> */}
 
-                <Card className="hover-card">
+                <Card className="hover-card h-full">
                     <h2 className="text-lg font-semibold mb-3 text-blue-100">
                         Progress Tracker
                     </h2>
@@ -126,7 +126,7 @@ export default function CalorieWeightGraph() {
                     </CardFooter>
                 </Card>
 
-                <Card className="hover-card">
+                <Card className="hover-card mt-2">
                     <BodyStats />
                     <UpdateProfile />
                 </Card>

@@ -1,3 +1,4 @@
+import { useState } from "react"; // Import useState for managing dialog state
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -34,6 +35,7 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 export default function ProfileSetupDialog() {
+    const [isOpen, setIsOpen] = useState(true); // State to control dialog visibility
     const form = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -81,12 +83,21 @@ export default function ProfileSetupDialog() {
 
         console.log("Converted JSON:", JSON.stringify(formObj));
 
-        // Now you can pass the formData to createUser
-        await createUser(formData);
+        try {
+            // Now you can pass the formData to createUser
+            await createUser(formData);
+
+            // Close the dialog upon successful form submission
+            setIsOpen(false);
+        } catch (error) {
+            console.error("Error while creating user:", error);
+        }
     };
 
     return (
-        <Dialog open={true}>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            {" "}
+            {/* Control dialog visibility */}
             <DialogContent className="sm:max-w-[425px] hover-dialog bg-white p-4 shadow-lg">
                 <DialogHeader>
                     <DialogTitle>Complete Your Profile</DialogTitle>
@@ -112,9 +123,12 @@ export default function ProfileSetupDialog() {
                         <ObjectiveDropdown
                             selectedObjective={form.watch("objective")}
                             setSelectedObjective={(objective) =>
-                                form.setValue("objective", objective, {
-                                    shouldValidate: true,
-                                })
+                                form.setValue(
+                                    "objective",
+                                    objective.charAt(0).toUpperCase() +
+                                        objective.slice(1), // Capitalize first letter
+                                    { shouldValidate: true }
+                                )
                             }
                         />
 
@@ -130,9 +144,12 @@ export default function ProfileSetupDialog() {
                         <ActivityLevelPicker
                             selectedActivityLevel={form.watch("activityLevel")}
                             setSelectedActivityLevel={(activityLevel) =>
-                                form.setValue("activityLevel", activityLevel, {
-                                    shouldValidate: true,
-                                })
+                                form.setValue(
+                                    "activityLevel",
+                                    activityLevel.charAt(0).toUpperCase() +
+                                        activityLevel.slice(1), // Capitalize first letter
+                                    { shouldValidate: true }
+                                )
                             }
                         />
 

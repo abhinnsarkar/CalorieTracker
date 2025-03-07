@@ -32,7 +32,7 @@ export default function FoodSearch() {
     );
 
     return (
-        <Card className="hover-card h-[calc(100vh-96px)]">
+        <Card className="hover-card h-full">
             <h2 className="text-lg font-semibold mb-3 text-blue-100">
                 Food Search
             </h2>
