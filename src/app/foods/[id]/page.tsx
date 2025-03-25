@@ -1,97 +1,73 @@
-import React from "react";
-import { prisma } from "@/lib/db";
+import Link from "next/link";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { getFoodById } from "@/app/actions/actions";
+import { Button } from "@/components/ui/button";
+import AddFood from "../AddFood";
+import Column1 from "./Column1/Column1";
+import Column2 from "./Column2/Column2";
+import Column3 from "./Column3/Column3";
 
-interface LinkPageProps {
-    params: {
-        id: string;
-    };
+export interface FoodInterface {
+    food_id: string;
+    food_name: string;
+    calories: number;
+    protein: number;
+    carbs: number;
+    fats: number;
+    fiber: number;
+    sugar: number;
+    sodium: number;
+    potassium: number;
+    iron: number;
+    portion_size: string | null;
+    default_quantity: number;
+    description: string | null;
+    instructions: string | null;
+    ingredients: string | null;
 }
 
-const ListItems = ({ items }: { items: string[] }) => (
-    <div className="flex-wrap w-[75%]">
-        {items.map((item, key) => (
-            <div key={key} className="hover-card text-center my-2">
-                {item}
-            </div>
-        ))}
-    </div>
-);
+interface FoodPageProps {
+    params: { id: string };
+}
 
-export default async function Page({ params }: LinkPageProps) {
-    // Fetch the food record using the provided id
-    const food = await prisma.foods.findUnique({
-        where: { food_id: params.id },
-    });
+export default async function Page({ params }: FoodPageProps) {
+    const foodId = params.id;
+    const food = (await getFoodById(foodId)) as FoodInterface;
 
-    if (!food) {
-        return <div>Food not found.</div>;
-    }
-
-    console.log("food is", JSON.stringify(food));
-    console.log("food description:", food?.description);
-
-    const foodFacts = [
-        { label: "Calories", value: food?.calories?.toString() },
-        { label: "Protein", value: food?.protein?.toString() + "g" },
-        { label: "Carbs", value: food?.carbs?.toString() + "g" },
-        { label: "Fats", value: food?.fats?.toString() + "g" },
-        { label: "Fiber", value: food?.fiber?.toString() + "g" },
-        { label: "Sugar", value: food?.sugar?.toString() + "g" },
-        { label: "Sodium", value: food?.sodium?.toString() + "g" },
-        { label: "Potassium", value: food?.potassium?.toString() + "g" },
-        { label: "Iron", value: food?.iron?.toString() + "g" },
-    ];
+    if (!food) return <div className="p-8">Food not found.</div>;
 
     return (
-        <div className="flex flex-col h-screen w-[95%] mx-auto">
-            {/* Main content */}
-            <main className="container mx-auto px-4 pt-20 flex-grow">
-                <h1 className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent place-self-center">
-                    {food?.food_name}
-                </h1>
-            </main>
+        <div className="min-h-screen bg-background text-foreground">
+            {/* Header */}
+            <div className="w-full px-4 md:px-12 pt-20 flex justify-center">
+                <div className="flex justify-between items-center w-full max-w-7xl">
+                    <div className="w-1/2">
+                        <Link href="/foods">
+                            <Button className="hover-btn">
+                                <ArrowBackIosIcon />
+                                Back to All Foods
+                            </Button>
+                        </Link>
+                    </div>
+                    <div className="w-1/2 flex justify-end">
+                        <AddFood food={food} />
+                    </div>
+                </div>
+            </div>
 
-            {/* Food Facts Grid */}
-            <div className="flex-grow grid grid-cols-3 grid-rows-2 w-[95%] mx-auto gap-4 overflow-hidden">
-                <div className="col-span-1">
-                    <div className="flex justify-center items-center">
-                        <div className="w-[75%] grid grid-cols-3 gap-4 my-2 auto-rows-auto">
-                            {foodFacts.map((fact, index) => (
-                                <div
-                                    key={index}
-                                    className="hover-card text-center"
-                                >
-                                    <p className="text-gray-600 font-semibold">
-                                        {fact.label}
-                                    </p>
-                                    <p className="text-gray-400">
-                                        {fact.value}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-                <div className="row-span-2">
-                    <div className="flex flex-col items-center justify-center row-span-2">
-                        <ListItems
-                            items={food?.ingredients?.split(",") ?? []}
-                        />
-                    </div>
-                </div>
-                <div className="row-span-2">
-                    <div className="flex flex-col items-center justify-center row-span-2">
-                        <ListItems
-                            items={food?.instructions?.split(",") ?? []}
-                        />
-                    </div>
-                </div>
-                <div className="col-start-1">
-                    <div className="flex justify-center items-center">
-                        <div className="w-[75%] my-2 hover-card text-center">
-                            {food?.description}
-                        </div>
-                    </div>
+            {/* Title */}
+            <div className="py-4 px-4 md:px-12">
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent text-center">
+                    {food.food_name}
+                </h1>
+            </div>
+
+            {/* Content */}
+            <div className="w-full px-4 md:px-12 py-8 flex justify-center">
+                <div className="flex flex-col md:flex-row gap-6 max-w-7xl w-full">
+                    <Column1 food={food} />
+                    <Column2 food={food} />
+                    <Column3 food={food} />
                 </div>
             </div>
         </div>

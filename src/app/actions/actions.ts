@@ -1,7 +1,9 @@
 "use server";
 import { prisma } from "@/lib/db";
+import { Prisma } from "@prisma/client";
 import { currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
+import { TodaysFoodEntry } from "../todaysfood/TodaysFoodTotals";
 
 export async function capitalizeFirstLetter(value: string): Promise<string> {
     return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
@@ -256,4 +258,191 @@ export async function updateUserProfile(formData: FormData) {
         console.error("Failed to update user profile:", error);
         throw new Error("Failed to update user profile");
     }
+}
+
+export async function getAllFoods() {
+    try {
+        const foodsList = await prisma.foods.findMany();
+        return foodsList.map((food) => ({
+            ...food,
+            protein:
+                food.protein instanceof Prisma.Decimal
+                    ? food.protein.toNumber()
+                    : 0,
+            carbs:
+                food.carbs instanceof Prisma.Decimal
+                    ? food.carbs.toNumber()
+                    : 0,
+            fats:
+                food.fats instanceof Prisma.Decimal ? food.fats.toNumber() : 0,
+            fiber:
+                food.fiber instanceof Prisma.Decimal
+                    ? food.fiber.toNumber()
+                    : 0,
+            sugar:
+                food.sugar instanceof Prisma.Decimal
+                    ? food.sugar.toNumber()
+                    : 0,
+            sodium:
+                food.sodium instanceof Prisma.Decimal
+                    ? food.sodium.toNumber()
+                    : 0,
+            potassium:
+                food.potassium instanceof Prisma.Decimal
+                    ? food.potassium.toNumber()
+                    : 0,
+            iron:
+                food.iron instanceof Prisma.Decimal ? food.iron.toNumber() : 0,
+            default_quantity:
+                food.default_quantity instanceof Prisma.Decimal
+                    ? food.default_quantity.toNumber()
+                    : 0,
+        }));
+    } catch (error) {
+        console.error("Error fetching all foods:", error);
+        throw new Error("Failed to fetch all foods");
+    }
+}
+
+export async function getFoodById(foodId: string) {
+    try {
+        const food = await prisma.foods.findUnique({
+            where: {
+                food_id: foodId,
+            },
+        });
+
+        if (!food) return null;
+
+        return {
+            ...food,
+            protein:
+                food.protein instanceof Prisma.Decimal
+                    ? food.protein.toNumber()
+                    : 0,
+            carbs:
+                food.carbs instanceof Prisma.Decimal
+                    ? food.carbs.toNumber()
+                    : 0,
+            fats:
+                food.fats instanceof Prisma.Decimal ? food.fats.toNumber() : 0,
+            fiber:
+                food.fiber instanceof Prisma.Decimal
+                    ? food.fiber.toNumber()
+                    : 0,
+            sugar:
+                food.sugar instanceof Prisma.Decimal
+                    ? food.sugar.toNumber()
+                    : 0,
+            sodium:
+                food.sodium instanceof Prisma.Decimal
+                    ? food.sodium.toNumber()
+                    : 0,
+            potassium:
+                food.potassium instanceof Prisma.Decimal
+                    ? food.potassium.toNumber()
+                    : 0,
+            iron:
+                food.iron instanceof Prisma.Decimal ? food.iron.toNumber() : 0,
+            default_quantity:
+                food.default_quantity instanceof Prisma.Decimal
+                    ? food.default_quantity.toNumber()
+                    : 0,
+        };
+    } catch (error) {
+        console.error("Error fetching food by ID:", error);
+        throw new Error("Failed to fetch food by ID");
+    }
+}
+
+export async function logFoodEntry({
+    food_id,
+    quantity,
+}: {
+    food_id: string;
+    quantity: number;
+}) {
+    const user = await currentUser();
+    const userId = user?.id as string;
+
+    console.log("in actions.ts");
+    console.log("userId", userId);
+    console.log("food_id", food_id);
+    console.log("quantity", quantity);
+
+    if (!userId) {
+        throw new Error("User not found");
+    }
+
+    try {
+        await prisma.userFoods.create({
+            data: {
+                user_id: userId,
+                food_id: food_id,
+                quantity: quantity,
+                date_logged: new Date(),
+            },
+        });
+
+        return true;
+    } catch (error) {
+        console.error("Error logging food entry:", error ?? "No error object");
+        throw error instanceof Error
+            ? error
+            : new Error("Failed to log food entry");
+    }
+}
+
+export async function getTodaysFoodEntries(): Promise<TodaysFoodEntry[]> {
+    const user = await currentUser();
+    const userId = user?.id as string;
+
+    if (!userId) {
+        throw new Error("User not found");
+    }
+
+    const now = new Date();
+    const startOfToday = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
+    );
+    const startOfTomorrow = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1
+    );
+
+    const userFoodEntries = await prisma.userFoods.findMany({
+        where: {
+            user_id: userId,
+            date_logged: {
+                gte: startOfToday,
+                lt: startOfTomorrow,
+            },
+        },
+        include: {
+            food: true,
+        },
+    });
+
+    const todaysEntries: TodaysFoodEntry[] = userFoodEntries.map((entry) => {
+        const multiplier = Number(entry.quantity); // servings consumed
+
+        return {
+            entry_id: entry.id,
+            food_name: entry.food.food_name,
+            calories: Number(entry.food.calories) * multiplier,
+            protein: Number(entry.food.protein) * multiplier,
+            carbs: Number(entry.food.carbs) * multiplier,
+            fats: Number(entry.food.fats) * multiplier,
+            fiber: Number(entry.food.fiber) * multiplier,
+            sugar: Number(entry.food.sugar) * multiplier,
+            sodium: Number(entry.food.sodium) * multiplier,
+            potassium: Number(entry.food.potassium) * multiplier,
+            iron: Number(entry.food.iron) * multiplier,
+        };
+    });
+
+    return todaysEntries;
 }

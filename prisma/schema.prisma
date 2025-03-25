@@ -8,26 +8,27 @@ datasource db {
 }
 
 model foods {
-  food_id          String   @id @db.VarChar(255)
-  food_name        String   @db.VarChar(100)
+  food_id          String      @id @db.VarChar(255)
+  food_name        String      @db.VarChar(100)
   calories         Int
-  protein          Decimal? @db.Decimal(6, 2)
-  carbs            Decimal? @db.Decimal(6, 2)
-  fats             Decimal? @db.Decimal(6, 2)
-  fiber            Decimal? @db.Decimal(6, 2)
-  sugar            Decimal? @db.Decimal(6, 2)
-  sodium           Decimal? @db.Decimal(6, 2)
-  potassium        Decimal? @db.Decimal(6, 2)
-  iron             Decimal? @db.Decimal(6, 2)
-  portion_size     String?  @db.VarChar(50)
-  default_quantity Decimal? @db.Decimal(5, 2)
+  protein          Decimal?    @db.Decimal(6, 2)
+  carbs            Decimal?    @db.Decimal(6, 2)
+  fats             Decimal?    @db.Decimal(6, 2)
+  fiber            Decimal?    @db.Decimal(6, 2)
+  sugar            Decimal?    @db.Decimal(6, 2)
+  sodium           Decimal?    @db.Decimal(6, 2)
+  potassium        Decimal?    @db.Decimal(6, 2)
+  iron             Decimal?    @db.Decimal(6, 2)
+  portion_size     String?     @db.VarChar(50)
+  default_quantity Decimal?    @db.Decimal(5, 2)
   description      String?
   instructions     String?
   ingredients      String?
+  userFoods        userFoods[]
 }
 
 model users {
-  user_id              String    @id
+  user_id              String      @id
   dob                  DateTime?
   height_cm            Float?
   weight_kg            Float?
@@ -35,7 +36,21 @@ model users {
   objective            String?
   activity_level       String?
   maintenance_calories Int?
-  profile_completed    Boolean   @default(false) // new column!
+  profile_completed    Boolean     @default(false)
+  userFoods            userFoods[]
+}
+
+model userFoods {
+  id          String   @id @default(uuid())
+  user_id     String
+  food_id     String
+  date_logged DateTime @default(now())
+  quantity    Decimal  @db.Decimal(5, 2)
+
+  user users @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  food foods @relation(fields: [food_id], references: [food_id], onDelete: Cascade)
+
+  @@map("user_foods")
 }
 
 enum gender_enum {

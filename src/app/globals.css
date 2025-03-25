@@ -64,14 +64,14 @@
 .hover-card {
     display: flex;
     flex-direction: column;
-    background-color: var(--accent); /* Solid background */
+    background-color: var(--accent);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     animation: fadeIn 0.5s ease-out;
     padding: 1rem;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.4),
-        0 0 10px rgba(255, 255, 255, 0.3); /* Thinner illuminated outline */
+        0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .hover-card:hover {
@@ -103,6 +103,25 @@
     color: var(--button-complement);
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.8),
         0 0 15px rgba(255, 255, 255, 0.6); /* Stronger glowing outline on hover */
+}
+
+/* hover-icon styles */
+.hover-icon {
+    transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
+}
+
+.hover-icon:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 1))
+        drop-shadow(0 0 24px rgba(255, 255, 255, 0.9));
+}
+
+.glow-box {
+    border-radius: "24px";
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7),
+        0 0 20px rgba(255, 255, 255, 0.6);
 }
 
 /* hover-dialog styles */
@@ -215,4 +234,26 @@
     body {
         @apply bg-background text-foreground;
     }
+}
+
+.hover-tab {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border-radius: 8px;
+    /* box-shadow: 0 0 4px rgba(255, 255, 255, 0.4); */
+}
+
+.hover-tab:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 24px rgba(255, 255, 255, 0.6),
+        0 0 32px rgba(255, 255, 255, 0.5);
+}
+
+.hover-tab[data-state="active"] {
+    /* transform: scale(1.125); */
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.7),
+        0 0 32px rgba(255, 255, 255, 0.5),
+        inset 0 0 8px rgba(255, 255, 255, 0.25);
+    background-color: var(--accent);
+    /* border: 1px solid rgba(255, 255, 255, 0.1); */
+    z-index: 1;
 }
