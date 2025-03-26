@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import CalorieWeightGraph from "./secret/ProgressTracker/CalorieWeightGraph";
 import DailyTracking from "./secret/DailyProgress/DailyProgress";
-import FoodSearch from "./secret/FoodSearch";
+import FoodSearch from "./secret/FoodSearch/FoodSearch";
 import ProfileSetupDialog from "./secret/ProfileSetupDialog";
 import { checkIfUserProfileAlreadyExists } from "./actions/actions";
 

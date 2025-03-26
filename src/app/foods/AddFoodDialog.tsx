@@ -13,8 +13,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { FoodItemInterface } from "../interfaces";
+// import { Food } from "./page";
 import { logFoodEntry } from "../actions/actions";
+import { FoodItemInterface } from "../interfaces";
 
 function AddFoodDialog({
     open,
@@ -56,17 +57,7 @@ function AddFoodDialog({
         <div>
             <Dialog open={open} onOpenChange={onClose}>
                 <DialogContent className="p-6 rounded-xl shadow-lg">
-                    <div className="mx-auto w-[87%]">
-                        <div className="flex flex-row justify-between">
-                            <DialogTitle className="text-xl font-semibold text-center mb-2 bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
-                                Add Food
-                            </DialogTitle>
-                            <CloseIcon
-                                className="hover-icon"
-                                onClick={onClose}
-                            />
-                        </div>
-                    </div>
+                    <CloseIcon className="hover-icon" onClick={onClose} />
                     <VisuallyHidden>
                         <DialogTitle>Add Food</DialogTitle>
                     </VisuallyHidden>
