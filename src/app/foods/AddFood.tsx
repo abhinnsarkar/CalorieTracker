@@ -2,13 +2,15 @@
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import AddFoodDialog from "./AddFoodDialog";
-import { Food } from "./page";
+import { FoodItemInterface } from "../interfaces";
 
-function AddFood({ food }: { food: Food }) {
-    const [selectedFood, setSelectedFood] = useState<Food | null>(null);
+function AddFood({ food }: { food: FoodItemInterface }) {
+    const [selectedFood, setSelectedFood] = useState<FoodItemInterface | null>(
+        null
+    );
     const [dialogOpen, setDialogOpen] = useState(false);
 
-    const addClicked = (food: Food) => {
+    const addClicked = (food: FoodItemInterface) => {
         console.log("Add clicked");
         setSelectedFood(food);
         setDialogOpen(true);

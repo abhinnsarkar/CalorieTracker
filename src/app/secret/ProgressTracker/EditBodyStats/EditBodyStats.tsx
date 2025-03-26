@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -15,11 +16,11 @@ import {
 } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 
-import ObjectiveDropdown from "../components/ObjectiveDropdown";
-import ActivityLevelPicker from "../components/ActivityLevelPicker";
-import HeightInput from "../components/HeightInput";
-import WeightInput from "../components/WeightInput";
-import { updateUserProfile } from "../actions/actions";
+import ObjectiveDropdown from "../../../components/ObjectiveDropdown";
+import ActivityLevelPicker from "@/app/components/ActivityLevelPicker";
+import HeightInput from "@/app/components/HeightInput";
+import WeightInput from "../../../components/WeightInput";
+import { updateUserProfile } from "../../../actions/actions";
 
 // Define the form schema with Zod
 const formSchema = z.object({
@@ -36,7 +37,7 @@ function capitalizeFirstLetter(value: string): string {
     return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
 }
 
-export default function UpdateProfile() {
+export default function EditBodyStats() {
     const [formOpen, setFormOpen] = useState(false);
 
     const form = useForm<FormSchema>({
@@ -92,9 +93,21 @@ export default function UpdateProfile() {
                 Edit Profile
             </Button>
             <Dialog open={formOpen || false}>
-                <DialogContent className="sm:max-w-[425px] hover-dialog bg-white p-4 shadow-lg">
+                {/* <DialogContent className="sm:max-w-[425px] hover-dialog bg-white p-4 shadow-lg"> */}
+                <DialogContent className="hover-dialog">
                     <DialogHeader>
-                        <DialogTitle>Edit Your Profile</DialogTitle>
+                        <div className="flex flex-row justify-between">
+                            <DialogTitle>
+                                <h2 className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
+                                    Edit your profile
+                                </h2>
+                            </DialogTitle>
+                            <CloseIcon
+                                className="hover-icon"
+                                onClick={() => setFormOpen(false)}
+                            />
+                        </div>
+
                         <DialogDescription>
                             Update your body information
                         </DialogDescription>

@@ -7,28 +7,11 @@ import { Button } from "@/components/ui/button";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { getAllFoods } from "../actions/actions";
 import AddFood from "./AddFood";
+import { FoodItemInterface } from "../interfaces";
 
-export interface Food {
-    food_id: string;
-    food_name: string;
-    calories: number;
-    protein: number;
-    carbs: number;
-    fats: number;
-    fiber: number;
-    sugar: number;
-    sodium: number;
-    potassium: number;
-    iron: number;
-    portion_size: string | null;
-    default_quantity: number;
-    description: string | null;
-    instructions: string | null;
-    ingredients: string | null;
-}
 
 export default function Page() {
-    const [foods, setFoods] = useState<Food[]>([]);
+    const [foods, setFoods] = useState<FoodItemInterface[]>([]);
 
     useEffect(() => {
         async function fetchFoods() {

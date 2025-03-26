@@ -37,6 +37,14 @@ model users {
   activity_level       String?
   maintenance_calories Int?
   profile_completed    Boolean     @default(false)
+  protein              Decimal?    @db.Decimal(6, 2)
+  fats                 Decimal?    @db.Decimal(6, 2)
+  carbs                Decimal?    @db.Decimal(6, 2)
+  fiber                Decimal?    @db.Decimal(6, 2)
+  sugar                Decimal?    @db.Decimal(6, 2)
+  sodium               Decimal?    @db.Decimal(6, 2)
+  potassium            Decimal?    @db.Decimal(6, 2)
+  iron                 Decimal?    @db.Decimal(6, 2)
   userFoods            userFoods[]
 }
 

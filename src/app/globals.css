@@ -128,7 +128,7 @@
 .hover-dialog {
     display: flex;
     flex-direction: column;
-    background-color: var(--accent); /* Solid background color */
+    /* background-color: var(--accent);  */
     backdrop-filter: blur(
         10px
     ); /* Apply backdrop blur for frosted glass effect */
@@ -145,7 +145,6 @@
 .hover-dialog:hover {
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.6),
         0 0 15px rgba(255, 255, 255, 0.5); /* Thicker glowing outline on hover */
-    background-color: var(--accent); /* Keep the same accent color on hover */
 }
 
 /* hover-menu-item styles to look like hover-btn */
@@ -257,3 +256,6 @@
     /* border: 1px solid rgba(255, 255, 255, 0.1); */
     z-index: 1;
 }
+
+/* .gradient-text { */
+/* } */

@@ -98,9 +98,13 @@ export default function ProfileSetupDialog() {
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             {" "}
             {/* Control dialog visibility */}
-            <DialogContent className="sm:max-w-[425px] hover-dialog bg-white p-4 shadow-lg">
+            <DialogContent className="sm:max-w-[425px] hover-dialog p-4 shadow-lg">
                 <DialogHeader>
-                    <DialogTitle>Complete Your Profile</DialogTitle>
+                    <DialogTitle>
+                        <h2 className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
+                            Complete your profile
+                        </h2>
+                    </DialogTitle>
                     <DialogDescription>
                         Fill in your details to set up your profile.
                     </DialogDescription>

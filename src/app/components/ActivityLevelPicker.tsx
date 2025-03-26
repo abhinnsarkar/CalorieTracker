@@ -1,5 +1,3 @@
-// components/ActivityLevelPicker.tsx
-
 import {
     DropdownMenu,
     DropdownMenuContent,

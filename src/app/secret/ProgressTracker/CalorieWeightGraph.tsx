@@ -2,8 +2,6 @@
 
 import React from "react";
 import { TrendingUp } from "lucide-react";
-// import { Separator } from "@/components/ui/separator";
-
 import {
     LineChart,
     Line,
@@ -17,8 +15,6 @@ import {
     CardContent,
     CardDescription,
     CardFooter,
-    // CardHeader,
-    // CardTitle,
 } from "@/components/ui/card";
 import {
     ChartConfig,
@@ -26,8 +22,8 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart";
-import UpdateProfile from "../components/UpdateProfile";
-import BodyStats from "../components/BodyStats";
+import EditBodyStats from "./EditBodyStats/EditBodyStats";
+import BodyStats from "../../components/BodyStats";
 
 const data = [
     { date: "Mon", calories: 2100, weight: 70 },
@@ -58,9 +54,10 @@ export default function CalorieWeightGraph() {
                 {/* <Separator /> */}
 
                 <Card className="hover-card h-full">
-                    <h2 className="text-lg font-semibold mb-3 text-blue-100">
+                    <h2 className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
                         Progress Tracker
                     </h2>
+                    <br />
                     <CardDescription>
                         Calories and Weight Over Time
                     </CardDescription>
@@ -128,7 +125,7 @@ export default function CalorieWeightGraph() {
 
                 <Card className="hover-card mt-2">
                     <BodyStats />
-                    <UpdateProfile />
+                    <EditBodyStats />
                 </Card>
             </Card>
         </>

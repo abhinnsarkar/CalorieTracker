@@ -33,16 +33,15 @@ export default function FoodSearch() {
 
     return (
         <Card className="hover-card h-full">
-            <h2 className="text-lg font-semibold mb-3 text-blue-100">
+            <h2 className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
                 Food Search
             </h2>
-
+            <br />
             <Link className=" w-full my-2" href="/foods">
                 <Button className="hover-btn w-full">
                     View All Foods <OpenInNewIcon />
                 </Button>
             </Link>
-
             <div className="relative flex-grow flex flex-col min-h-0">
                 <div>
                     <Input

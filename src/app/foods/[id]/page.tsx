@@ -6,25 +6,7 @@ import AddFood from "../AddFood";
 import Column1 from "./Column1/Column1";
 import Column2 from "./Column2/Column2";
 import Column3 from "./Column3/Column3";
-
-export interface FoodInterface {
-    food_id: string;
-    food_name: string;
-    calories: number;
-    protein: number;
-    carbs: number;
-    fats: number;
-    fiber: number;
-    sugar: number;
-    sodium: number;
-    potassium: number;
-    iron: number;
-    portion_size: string | null;
-    default_quantity: number;
-    description: string | null;
-    instructions: string | null;
-    ingredients: string | null;
-}
+import { FoodItemInterface } from "@/app/interfaces";
 
 interface FoodPageProps {
     params: { id: string };
@@ -32,7 +14,7 @@ interface FoodPageProps {
 
 export default async function Page({ params }: FoodPageProps) {
     const foodId = params.id;
-    const food = (await getFoodById(foodId)) as FoodInterface;
+    const food = (await getFoodById(foodId)) as FoodItemInterface;
 
     if (!food) return <div className="p-8">Food not found.</div>;
 
