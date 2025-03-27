@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import { currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import {
+    FoodItemInterface,
     TodaysFoodEntryInterface,
     TodaysFoodToalsInterface,
 } from "@/app/interfaces";
@@ -548,4 +549,63 @@ export async function getTodaysFoodTotals(): Promise<TodaysFoodToalsInterface> {
     }
 }
 
-// export async function searchFoods(searchInput: string): Promise<Food[]> {;
+export async function searchFoods(
+    searchEntry: string
+): Promise<FoodItemInterface[]> {
+    if (!searchEntry.trim()) return [];
+
+    const foodsList = await prisma.foods.findMany({
+        where: {
+            food_name: {
+                contains: searchEntry,
+                mode: "insensitive",
+            },
+        },
+    });
+
+    return foodsList.map((food) => ({
+        ...food,
+        protein:
+            food.protein instanceof Prisma.Decimal
+                ? food.protein.toNumber()
+                : 0,
+        carbs: food.carbs instanceof Prisma.Decimal ? food.carbs.toNumber() : 0,
+        fats: food.fats instanceof Prisma.Decimal ? food.fats.toNumber() : 0,
+        fiber: food.fiber instanceof Prisma.Decimal ? food.fiber.toNumber() : 0,
+        sugar: food.sugar instanceof Prisma.Decimal ? food.sugar.toNumber() : 0,
+        sodium:
+            food.sodium instanceof Prisma.Decimal ? food.sodium.toNumber() : 0,
+        potassium:
+            food.potassium instanceof Prisma.Decimal
+                ? food.potassium.toNumber()
+                : 0,
+        iron: food.iron instanceof Prisma.Decimal ? food.iron.toNumber() : 0,
+        default_quantity:
+            food.default_quantity instanceof Prisma.Decimal
+                ? food.default_quantity.toNumber()
+                : 0,
+    }));
+}
+
+export async function deleteLoggedFood(log_id: string): Promise<boolean> {
+    const user = await currentUser();
+    const userId = user?.id as string;
+
+    if (!userId) {
+        throw new Error("User not found");
+    }
+
+    try {
+        await prisma.userFoods.delete({
+            where: {
+                id: log_id,
+                user_id: userId,
+            },
+        });
+
+        return true;
+    } catch (error) {
+        console.error("Error deleting logged food:", error);
+        return false;
+    }
+}

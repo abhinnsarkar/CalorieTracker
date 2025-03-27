@@ -7,41 +7,36 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import Link from "next/link";
 import FoodSearchList from "./FoodSearchList";
 import { FoodItemInterface } from "@/app/interfaces";
-import { getAllFoods } from "@/app/actions/actions";
-
-// const mockFoods = [
-//     "Apple",
-//     "Banana",
-//     "Chicken Breast",
-//     "Greek Yogurt",
-//     "Quinoa",
-//     "Brown Rice",
-//     "Salmon",
-//     "Sweet Potato",
-//     "Avocado",
-//     "Eggs",
-// ];
+import { searchFoods } from "@/app/actions/actions";
 
 export default function FoodSearch() {
     const [search, setSearch] = useState("");
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
     const [filteredFoods, setFilteredFoods] = useState<FoodItemInterface[]>([]);
 
     useEffect(() => {
-        const fetchFoods = async () => {
-            try {
-                const foodsList = await getAllFoods();
-                setFilteredFoods(foodsList);
-            } catch (error) {
-                console.error("Failed to fetch foods:", error);
-            }
-        };
-        fetchFoods();
-    }, []);
+        const handler = setTimeout(() => {
+            const doSearch = async () => {
+                if (search.trim() === "") {
+                    setFilteredFoods([]);
+                    return;
+                }
+
+                try {
+                    const results = await searchFoods(search);
+                    setFilteredFoods(results);
+                } catch (error) {
+                    console.error("Search failed:", error);
+                }
+            };
+
+            doSearch();
+        }, 300);
+
+        return () => clearTimeout(handler);
+    }, [search]);
 
     const openSearchOptions = () => {
-        console.log("openSearchOptions");
         setIsDropdownOpen(true);
     };
 
@@ -63,7 +58,7 @@ export default function FoodSearch() {
                         placeholder="Search foods..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        onFocus={() => openSearchOptions()}
+                        onFocus={openSearchOptions}
                         className="pl-10 bg-accent/50 border-white/10 text-blue-100 placeholder:text-blue-300/50"
                     />
                 </div>

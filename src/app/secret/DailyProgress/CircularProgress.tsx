@@ -116,7 +116,12 @@ export default function CircularProgress({
                                                 >
                                                     {Math.round(
                                                         decimalPercentage * 100
-                                                    )}
+                                                    ) > 100
+                                                        ? 100
+                                                        : Math.round(
+                                                              decimalPercentage *
+                                                                  100
+                                                          )}
                                                     %
                                                 </tspan>
                                                 <tspan

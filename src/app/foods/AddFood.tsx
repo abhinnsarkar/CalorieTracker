@@ -1,18 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
-import AddFoodDialog from "./AddFoodDialog";
+import FoodLogDialog from "../components/FoodLogDialog";
 import { FoodItemInterface } from "../interfaces";
 
 function AddFood({ food }: { food: FoodItemInterface }) {
     const [dialogOpen, setDialogOpen] = useState(false);
-    const [selectedFood, setSelectedFood] = useState<FoodItemInterface | null>(
-        null
-    );
 
     const handleClick = (e: React.MouseEvent) => {
         e.stopPropagation(); // prevent parent dropdowns from closing
-        setSelectedFood(food);
         setDialogOpen(true);
     };
 
@@ -22,10 +18,10 @@ function AddFood({ food }: { food: FoodItemInterface }) {
                 className="hover-icon cursor-pointer"
                 onClick={handleClick}
             />
-            <AddFoodDialog
+            <FoodLogDialog
                 open={dialogOpen}
-                onClose={() => setDialogOpen(false)}
-                selectedFood={selectedFood}
+                onOpenChange={setDialogOpen}
+                food={food}
             />
         </>
     );

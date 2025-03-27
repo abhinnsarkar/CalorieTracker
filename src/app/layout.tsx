@@ -1,5 +1,5 @@
 import { SignedIn, SignedOut } from "@clerk/nextjs";
-
+import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -40,8 +40,9 @@ export default function RootLayout({
                         </main>
                     </SignedOut>
                     <SignedIn>
-                        <main>{children}</main>{" "}
+                        <main>{children}</main>
                     </SignedIn>
+                    <Toaster />
                 </body>
             </html>
         </ClerkProvider>
