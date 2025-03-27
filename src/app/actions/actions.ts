@@ -240,7 +240,7 @@ export async function getUserCurrentNutritionRequirements() {
     }
 }
 
-export async function updateUserProfile(formData: FormData) {
+export async function updateUserProfile(formData: FormData): Promise<boolean> {
     console.log("Updating user profile with data:", formData);
 
     const user = await currentUser();
@@ -310,9 +310,11 @@ export async function updateUserProfile(formData: FormData) {
                 activity_level: normalizedActivityLevel, // Store activity level as lowercase
             },
         });
+        return true;
     } catch (error) {
         console.error("Failed to update user profile:", error);
         throw new Error("Failed to update user profile");
+        return false;
     }
 }
 

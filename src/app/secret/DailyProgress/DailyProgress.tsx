@@ -101,7 +101,7 @@ export default function DailyProgress() {
                         value={todaysTotals?.fats || 0}
                         max={nutritionRequirements?.fats || 0}
                     />
-                    <br />
+                    {/* <br /> */}
                     <h3 className="text-sm font-medium text-blue-200/70">
                         Micronutrients
                     </h3>

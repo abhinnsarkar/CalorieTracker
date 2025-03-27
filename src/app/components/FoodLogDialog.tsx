@@ -57,6 +57,12 @@ export default function FoodLogDialog({
                 description: "The food was successfully logged.",
                 variant: "success",
             });
+        } else {
+            RenderNotification({
+                title: "Error Logging Food",
+                description: "The food was not successfully logged.",
+                variant: "destructive",
+            });
         }
     };
 

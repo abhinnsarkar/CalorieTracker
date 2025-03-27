@@ -11,13 +11,19 @@ import { RenderNotification } from "@/app/components/RenderNotification";
 function TodaysFoodItem({ entry }: { entry: TodaysFoodEntryInterface }) {
     const deleteFoodEntry = async () => {
         console.log("deleteFoodEntry");
-        await deleteLoggedFood(entry.entry_id);
-
-        RenderNotification({
-            title: "Food Log Deleted",
-            description: "The food log was successfully removed.",
-            variant: "success",
-        });
+        if (await deleteLoggedFood(entry.entry_id)) {
+            RenderNotification({
+                title: "Food Log Deleted",
+                description: "The food log was successfully removed.",
+                variant: "success",
+            });
+        } else {
+            RenderNotification({
+                title: "Error Deleting Food Log",
+                description: "The food log was not successfully removed.",
+                variant: "destructive",
+            });
+        }
     };
 
     return (

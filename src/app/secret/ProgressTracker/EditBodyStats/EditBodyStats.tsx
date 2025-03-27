@@ -21,6 +21,7 @@ import ActivityLevelPicker from "@/app/components/ActivityLevelPicker";
 import HeightInput from "@/app/components/HeightInput";
 import WeightInput from "../../../components/WeightInput";
 import { updateUserProfile } from "../../../actions/actions";
+import { RenderNotification } from "@/app/components/RenderNotification";
 
 // Define the form schema with Zod
 const formSchema = z.object({
@@ -81,7 +82,19 @@ export default function EditBodyStats() {
         console.log("Converted JSON:", JSON.stringify(formObj));
 
         // Call the update function
-        await updateUserProfile(formData);
+        if (await updateUserProfile(formData)) {
+            RenderNotification({
+                title: "Edited Body Profile Successfully",
+                description: "The body profile was successfully removed.",
+                variant: "success",
+            });
+        } else {
+            RenderNotification({
+                title: "Error Editing Body Profile",
+                description: "The body profile was not successfully removed.",
+                variant: "destructive",
+            });
+        }
 
         // Close the form once the update is complete
         setFormOpen(false);
@@ -97,10 +110,8 @@ export default function EditBodyStats() {
                 <DialogContent className="hover-dialog">
                     <DialogHeader>
                         <div className="flex flex-row justify-between">
-                            <DialogTitle>
-                                <h2 className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
-                                    Edit your profile
-                                </h2>
+                            <DialogTitle className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
+                                Edit your profile
                             </DialogTitle>
                             <CloseIcon
                                 className="hover-icon"

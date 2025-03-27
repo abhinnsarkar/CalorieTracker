@@ -1,12 +1,9 @@
 "use client";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-// import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-
 import { Button } from "@/components/ui/button";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { getAllFoods } from "../actions/actions";
-// import AddFood from "./AddFood";
 import { FoodItemInterface } from "../interfaces";
 import AllFoodsListItem from "./AllFoodsListItem";
 
@@ -62,8 +59,10 @@ export default function Page() {
         setFoods(filtered);
     };
 
+    console.log("alphabet", alphabet);
+
     return (
-        <main className="container mx-auto px-4 pt-20">
+        <main className="container mx-auto layout-x-padding pt-20">
             <div className="justify-start">
                 <Link href="/">
                     <Button className="hover-btn">
@@ -80,8 +79,9 @@ export default function Page() {
                 </h1>
             </div>
 
-            <div className="space-y-4">
-                <div className="flex flex-row w-full">
+            <div className="space-y-4 w-full">
+                {/* <div className=" grid grid-cols-26"> */}
+                <div className="grid grid-cols-[repeat(26,_minmax(0,_1fr))] w-full">
                     {alphabet.map((letter) => (
                         <div
                             key={letter}

@@ -8,7 +8,8 @@ function AllFoodsListItem({ food }: { food: FoodItemInterface }) {
     return (
         <div
             key={food.food_id}
-            className="hover-card border border-white/10 flex flex-col my-3 p-4"
+            // className="hover-card border border-white/10 flex flex-col my-3 p-4"
+            className="hover-card border flex flex-col layout-x-padding"
         >
             <div className="w-full">
                 <div className="flex flex-row w-full">

@@ -286,3 +286,8 @@
     scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
     scrollbar-width: thin;
 }
+@layer components {
+    .layout-x-padding {
+        @apply px-4 sm:px-6 md:px-10;
+    }
+}
