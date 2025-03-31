@@ -10,7 +10,6 @@ import { RenderNotification } from "@/app/components/RenderNotification";
 
 function TodaysFoodItem({ entry }: { entry: TodaysFoodEntryInterface }) {
     const deleteFoodEntry = async () => {
-        console.log("deleteFoodEntry");
         if (await deleteLoggedFood(entry.entry_id)) {
             RenderNotification({
                 title: "Food Log Deleted",

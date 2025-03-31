@@ -38,7 +38,7 @@ function capitalizeFirstLetter(value: string): string {
     return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
 }
 
-export default function EditBodyStats() {
+export default function EditBodyInformation() {
     const [formOpen, setFormOpen] = useState(false);
 
     const form = useForm<FormSchema>({
@@ -57,7 +57,6 @@ export default function EditBodyStats() {
         event.preventDefault(); // Prevent the default form submission
 
         const formValues = form.getValues();
-        console.log("Form Data:", formValues);
 
         const formObj: Record<string, string | Date | undefined> = {
             objective: capitalizeFirstLetter(formValues.objective),
@@ -79,19 +78,17 @@ export default function EditBodyStats() {
             }
         }
 
-        console.log("Converted JSON:", JSON.stringify(formObj));
-
         // Call the update function
         if (await updateUserProfile(formData)) {
             RenderNotification({
                 title: "Edited Body Profile Successfully",
-                description: "The body profile was successfully removed.",
+                description: "The body profile was successfully updated.",
                 variant: "success",
             });
         } else {
             RenderNotification({
                 title: "Error Editing Body Profile",
-                description: "The body profile was not successfully removed.",
+                description: "The body profile was not successfully updated.",
                 variant: "destructive",
             });
         }

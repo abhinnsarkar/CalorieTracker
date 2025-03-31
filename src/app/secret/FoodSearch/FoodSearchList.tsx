@@ -47,9 +47,6 @@ function FoodSearchList({
                                         e.stopPropagation();
                                         setSelectedFood(food);
                                         setDialogOpen(true);
-                                        console.log(
-                                            "Dialog opened from AddIcon click"
-                                        );
                                     }}
                                     className="hover-icon cursor-pointer"
                                 />

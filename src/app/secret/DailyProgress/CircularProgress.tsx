@@ -41,13 +41,10 @@ export default function CircularProgress({
         },
     } satisfies ChartConfig;
 
-    console.log("Calories Consumed:", caloriesConsumed);
-    console.log("Calories Goal:", caloriesGoal);
     const decimalPercentage =
         caloriesGoal > 0 ? caloriesConsumed / caloriesGoal : 0;
-    console.log("Decimal Percentage:", decimalPercentage);
+
     const circleEndAngle = -(decimalPercentage * 360) + 90;
-    console.log("Circle End Angle:", circleEndAngle);
 
     return (
         <Card className="flex flex-col border-none">

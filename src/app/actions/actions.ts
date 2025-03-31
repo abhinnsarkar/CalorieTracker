@@ -14,7 +14,7 @@ export async function capitalizeFirstLetter(value: string): Promise<string> {
     return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
 }
 
-export async function createUser(formData: FormData): Promise<void> {
+export async function createUser(formData: FormData): Promise<boolean> {
     const user = await currentUser();
     const userId = user?.id as string;
 
@@ -56,8 +56,9 @@ export async function createUser(formData: FormData): Promise<void> {
         superactive: 1.9,
     };
 
-    let maintenance_calories =
-        bmr * (activityMultipliers[activity_level] || 1.2);
+    const normalizedActivityLevelMultiplier =
+        activity_level != null ? activityMultipliers[activity_level] : 1.2;
+    let maintenance_calories = bmr * normalizedActivityLevelMultiplier;
 
     if (objective === "bulking") maintenance_calories += 500;
     if (objective === "cutting") maintenance_calories -= 500;
@@ -137,9 +138,11 @@ export async function createUser(formData: FormData): Promise<void> {
         });
 
         revalidatePath("/");
+        return true;
     } catch (err) {
         console.error("Failed to create user:", err);
         throw new Error("Failed to create user");
+        return false;
     }
 }
 
@@ -242,16 +245,12 @@ export async function getUserCurrentNutritionRequirements() {
 }
 
 export async function updateUserProfile(formData: FormData): Promise<boolean> {
-    console.log("Updating user profile with data:", formData);
-
     const user = await currentUser();
     const userId = user?.id as string;
 
     if (!userId) {
         throw new Error("User not found");
     }
-
-    console.log("update user profile with User ID:", userId);
 
     // Parsing height and weight
     const height_cm = parseFloat(formData.get("height") as string);
@@ -298,7 +297,94 @@ export async function updateUserProfile(formData: FormData): Promise<boolean> {
     // Retrieve the original (capitalized) objective value for database update
     const originalObjective = formData.get("objective") as string;
 
-    // Proceed to update the user profile in the database
+    // Recalculate nutritional values based on new height, weight, gender, activity level, and objective
+    const userRecord = await prisma.users.findUnique({
+        where: { user_id: userId },
+        select: { dob: true, gender: true },
+    });
+
+    if (!userRecord || !userRecord.dob || !userRecord.gender) {
+        throw new Error("User profile is missing DOB or gender");
+    }
+
+    const dob = new Date(userRecord.dob);
+    const today = new Date();
+    const age =
+        today.getFullYear() -
+        dob.getFullYear() -
+        (today < new Date(today.getFullYear(), dob.getMonth(), dob.getDate())
+            ? 1
+            : 0);
+
+    const gender = userRecord.gender;
+
+    const bmr =
+        gender === "male"
+            ? 88.362 + 13.397 * weight_kg + 4.799 * height_cm - 5.677 * age
+            : 447.593 + 9.247 * weight_kg + 3.098 * height_cm - 4.33 * age;
+
+    const activityMultipliers = {
+        sedentary: 1.2,
+        light: 1.375,
+        moderate: 1.55,
+        active: 1.725,
+        superactive: 1.9,
+    };
+
+    const normalizedActivityLevelMultiplier =
+        activity_level != null ? activityMultipliers[activity_level] : 1.2;
+    let maintenance_calories = bmr * normalizedActivityLevelMultiplier;
+
+    if (objective === "bulking") maintenance_calories += 500;
+    if (objective === "cutting") maintenance_calories -= 500;
+
+    const protein =
+        gender === "male"
+            ? objective === "cutting"
+                ? weight_kg * 2.4
+                : objective === "bulking"
+                ? weight_kg * 1.8
+                : weight_kg * 1.5
+            : objective === "cutting"
+            ? weight_kg * 2.2
+            : objective === "bulking"
+            ? weight_kg * 1.6
+            : weight_kg * 1.4;
+
+    const fats =
+        gender === "male"
+            ? objective === "cutting"
+                ? weight_kg * 0.9
+                : objective === "bulking"
+                ? weight_kg * 1.2
+                : weight_kg * 1.0
+            : objective === "cutting"
+            ? weight_kg * 0.8
+            : objective === "bulking"
+            ? weight_kg * 1.0
+            : weight_kg * 0.9;
+
+    const proteinCalories = protein * 4;
+    const fatCalories = fats * 9;
+    const remainingCalories =
+        maintenance_calories - (proteinCalories + fatCalories);
+    const carbs = remainingCalories > 0 ? remainingCalories / 4 : 0;
+
+    const fiber =
+        gender === "male"
+            ? weight_kg > 70
+                ? 38
+                : 30
+            : weight_kg > 55
+            ? 25
+            : 21;
+
+    const sugar = gender === "male" ? 36 : 25;
+    const sodium = 2300;
+    const potassium = gender === "male" ? 3400 : 2600;
+    const iron = gender === "male" ? 8 : 18;
+
+    // Update the user profile in the database with recalculated values
     try {
         await prisma.users.update({
             where: {
@@ -307,15 +393,23 @@ export async function updateUserProfile(formData: FormData): Promise<boolean> {
             data: {
                 height_cm,
                 weight_kg,
-                objective: originalObjective.toLowerCase(), // Store objective as lowercase
-                activity_level: normalizedActivityLevel, // Store activity level as lowercase
+                objective: originalObjective.toLowerCase(),
+                activity_level: normalizedActivityLevel,
+                maintenance_calories: Math.round(maintenance_calories),
+                protein,
+                fats,
+                carbs,
+                fiber,
+                sugar,
+                sodium,
+                potassium,
+                iron,
             },
         });
         return true;
     } catch (error) {
         console.error("Failed to update user profile:", error);
         throw new Error("Failed to update user profile");
-        return false;
     }
 }
 
@@ -424,11 +518,6 @@ export async function logFoodEntry({
     const user = await currentUser();
     const userId = user?.id as string;
 
-    console.log("in actions.ts");
-    console.log("userId", userId);
-    console.log("food_id", food_id);
-    console.log("quantity", quantity);
-
     if (!userId) {
         throw new Error("User not found");
     }
@@ -437,8 +526,6 @@ export async function logFoodEntry({
     const offsetMs = now.getTimezoneOffset() * 60 * 1000;
     const localDate = new Date(now.getTime() - offsetMs);
 
-    console.log("now (UTC)", now);
-    console.log("localDate (adjusted to local calendar day)", localDate);
     try {
         await prisma.userFoods.create({
             data: {
@@ -637,8 +724,6 @@ export async function getPreviousWeeksCaloricConsumption(): Promise<
             todaysDate.getDate() - 7
         );
 
-        console.log("startDate", startDate);
-
         const entries = await prisma.userFoods.findMany({
             where: {
                 user_id: userId,
@@ -657,7 +742,6 @@ export async function getPreviousWeeksCaloricConsumption(): Promise<
                 },
             },
         });
-        console.log("Entries from past week actions ts:", entries);
 
         const dailyTotals: { [date: string]: number } = {};
 
@@ -677,10 +761,35 @@ export async function getPreviousWeeksCaloricConsumption(): Promise<
             date,
             calories,
         }));
-        console.log("Calories from past week actions ts:", result);
+
         return result;
     } catch (error) {
         console.error("Error fetching todays food entries:", error);
         throw new Error("Failed to fetch todays food entries");
+    }
+}
+
+export async function getMaintenanceCalories() {
+    const user = await currentUser();
+    const userId = user?.id as string;
+
+    if (!userId) {
+        throw new Error("User not found");
+    }
+
+    try {
+        const maintenanceCalories = await prisma.users.findUnique({
+            where: {
+                user_id: userId,
+            },
+            select: {
+                maintenance_calories: true,
+            },
+        });
+
+        return maintenanceCalories;
+    } catch (error) {
+        console.error("Error fetching maintenance calories:", error);
+        throw new Error("Failed to fetch maintenance calories");
     }
 }

@@ -21,6 +21,7 @@ import ActivityLevelPicker from "../components/ActivityLevelPicker";
 import HeightInput from "../components/HeightInput";
 import WeightInput from "../components/WeightInput";
 import { createUser } from "../actions/actions";
+import { RenderNotification } from "../components/RenderNotification";
 
 // Define the form schema with Zod
 const formSchema = z.object({
@@ -55,7 +56,6 @@ export default function ProfileSetupDialog() {
 
         // Get all form values from react-hook-form
         const formValues = form.getValues();
-        console.log("Form Data:", formValues);
 
         const formObj: Record<string, string | Date | undefined> = {
             gender: formValues.gender,
@@ -81,11 +81,21 @@ export default function ProfileSetupDialog() {
             }
         }
 
-        console.log("Converted JSON:", JSON.stringify(formObj));
-
         try {
             // Now you can pass the formData to createUser
-            await createUser(formData);
+            if (await createUser(formData)) {
+                RenderNotification({
+                    title: "Profile Created Successfully",
+                    description: "Your profile has been created successfully.",
+                    variant: "success",
+                });
+            } else {
+                RenderNotification({
+                    title: "Error Creating Profile",
+                    description: "Your profile was not created successfully.",
+                    variant: "destructive",
+                });
+            }
 
             // Close the dialog upon successful form submission
             setIsOpen(false);

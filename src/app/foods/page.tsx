@@ -59,8 +59,6 @@ export default function Page() {
         setFoods(filtered);
     };
 
-    console.log("alphabet", alphabet);
-
     return (
         <main className="container mx-auto layout-x-padding pt-20">
             <div className="justify-start">

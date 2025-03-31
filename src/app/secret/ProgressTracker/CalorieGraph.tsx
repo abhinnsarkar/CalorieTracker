@@ -8,7 +8,7 @@ import {
     YAxis,
     CartesianGrid,
     ResponsiveContainer,
-    ReferenceLine,
+    // ReferenceLine,
 } from "recharts";
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import {
@@ -17,9 +17,12 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart";
-import EditBodyStats from "./EditBodyStats/EditBodyStats";
+import EditBodyInformation from "./EditBodyStats/EditBodyInformation";
 import BodyStats from "../../components/BodyStats";
-import { getPreviousWeeksCaloricConsumption } from "@/app/actions/actions";
+import {
+    getMaintenanceCalories,
+    getPreviousWeeksCaloricConsumption,
+} from "@/app/actions/actions";
 import { CaloricConsumptionInterface } from "@/app/interfaces";
 import { format, subDays } from "date-fns";
 
@@ -34,13 +37,16 @@ const chartConfig = {
     },
 } satisfies ChartConfig;
 
-export default function CalorieWeightGraph() {
+export default function CalorieGraph() {
     const [entries, setEntries] = useState<CaloricConsumptionInterface[]>([]);
 
     useEffect(() => {
         async function getCalories() {
             const rawEntries = await getPreviousWeeksCaloricConsumption();
-            console.log("rawEntries: " + rawEntries);
+            const maintenanceCaloriesObj = await getMaintenanceCalories();
+            const maintenanceCalories =
+                maintenanceCaloriesObj?.maintenance_calories;
+
             const dateMap = new Map(
                 rawEntries.map((e) => [e.date, e.calories])
             );
@@ -50,17 +56,15 @@ export default function CalorieWeightGraph() {
                 const date = format(subDays(new Date(), 6 - i), "yyyy-MM-dd");
                 fullWeek.push({
                     date,
-                    calories: dateMap.get(date),
-                    goal: 1712,
+                    calories: dateMap.get(date) ?? 0,
+                    goal: maintenanceCalories ?? 0,
                 });
             }
             setEntries(fullWeek);
             return fullWeek;
         }
 
-        getCalories().then((entriesData) => {
-            console.log("Calories from past week:", entriesData);
-        });
+        getCalories();
     }, []);
 
     return (
@@ -144,7 +148,7 @@ export default function CalorieWeightGraph() {
 
                 <Card className="hover-card mt-2">
                     <BodyStats />
-                    <EditBodyStats />
+                    <EditBodyInformation />
                 </Card>
             </Card>
         </>

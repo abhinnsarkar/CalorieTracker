@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import CalorieWeightGraph from "./secret/ProgressTracker/CalorieWeightGraph";
+import CalorieGraph from "./secret/ProgressTracker/CalorieGraph";
 import DailyTracking from "./secret/DailyProgress/DailyProgress";
 import FoodSearch from "./secret/FoodSearch/FoodSearch";
 import ProfileSetupDialog from "./secret/ProfileSetupDialog";
@@ -31,7 +31,7 @@ export default function Home() {
             <main className="flex-1 container mx-auto px-4 pt-20">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-0">
                     {showProfileSetup && <ProfileSetupDialog />}
-                    <CalorieWeightGraph />
+                    <CalorieGraph />
                     <FoodSearch />
                     <DailyTracking />
                 </div>

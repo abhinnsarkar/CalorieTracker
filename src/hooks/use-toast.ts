@@ -14,12 +14,12 @@ type ToasterToast = ToastProps & {
     action?: ToastActionElement;
 };
 
-const actionTypes = {
-    ADD_TOAST: "ADD_TOAST",
-    UPDATE_TOAST: "UPDATE_TOAST",
-    DISMISS_TOAST: "DISMISS_TOAST",
-    REMOVE_TOAST: "REMOVE_TOAST",
-} as const;
+type actionTypes = {
+    ADD_TOAST: "ADD_TOAST";
+    UPDATE_TOAST: "UPDATE_TOAST";
+    DISMISS_TOAST: "DISMISS_TOAST";
+    REMOVE_TOAST: "REMOVE_TOAST";
+};
 
 let count = 0;
 function genId() {
@@ -27,7 +27,7 @@ function genId() {
     return count.toString();
 }
 
-type ActionType = typeof actionTypes;
+type ActionType = actionTypes;
 
 type Action =
     | { type: ActionType["ADD_TOAST"]; toast: ToasterToast }
@@ -125,7 +125,6 @@ function toast({ ...props }: Toast) {
 }
 
 function useToast() {
-    console.log("useToast");
     const [state, setState] = React.useState<State>(memoryState);
 
     React.useEffect(() => {

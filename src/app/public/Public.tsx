@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
 
 export default function Public() {
-    console.log("Public Page");
     return (
         <div className="min-h-screen flex flex-col">
             {/* Push content below the header */}
@@ -33,12 +32,143 @@ export default function Public() {
                         <div className="mt-6">
                             <SignedOut>
                                 <div className="flex justify-between">
-                                    <SignInButton>
+                                    <SignUpButton
+                                        mode="modal"
+                                        appearance={{
+                                            elements: {
+                                                card: {
+                                                    backgroundColor:
+                                                        "hsl(var(--accent))",
+                                                    border: "1px solid rgba(255, 255, 255, 0.15)",
+                                                    borderRadius: "12px",
+                                                    padding: "1.25rem",
+                                                    animation:
+                                                        "fadeIn 0.5s ease-out",
+                                                    boxShadow:
+                                                        "0 0 12px rgba(255, 255, 255, 0.4), 0 0 20px rgba(255, 255, 255, 0.2)",
+                                                    color: "hsl(var(--foreground))",
+                                                },
+                                                headerTitle: {
+                                                    color: "white",
+                                                    fontSize: "1.25rem",
+                                                    fontWeight: "600",
+                                                },
+                                                formFieldInput: {
+                                                    backgroundColor:
+                                                        "transparent",
+                                                    color: "white",
+                                                    border: "1px solid rgba(255,255,255,0.2)",
+                                                    borderRadius: "8px",
+                                                    padding: "0.75rem",
+                                                    boxShadow:
+                                                        "0 0 8px rgba(255,255,255,0.2)",
+                                                },
+                                                formFieldLabel: {
+                                                    color: "hsl(var(--foreground))",
+                                                },
+                                                formButtonPrimary: {
+                                                    backgroundColor: "#10b981",
+                                                    color: "#fff",
+                                                    borderRadius: "8px",
+                                                    padding: "0.75rem",
+                                                    fontWeight: "600",
+                                                    boxShadow:
+                                                        "0 0 12px rgba(255, 255, 255, 0.5)",
+                                                },
+                                                socialButtonsBlockButton: {
+                                                    backgroundColor:
+                                                        "transparent",
+                                                    border: "1px solid rgba(255, 255, 255, 0.2)",
+                                                    color: "#fff",
+                                                    boxShadow:
+                                                        "0 0 8px rgba(255,255,255,0.3)",
+                                                },
+                                                footerActionText: {
+                                                    color: "rgba(255,255,255,0.6)",
+                                                },
+                                                footerActionLink: {
+                                                    color: "#3b82f6",
+                                                    fontWeight: "500",
+                                                },
+                                                footer: {
+                                                    display: "none",
+                                                },
+                                                // footer: {
+                                                //     className:
+                                                //         "bg-[hsl(var(--accent))] border-t border-white/10 text-[hsl(var(--foreground))] pt-4 shadow-[0_0_15px_rgba(255,255,255,0.5)]",
+                                                // },
+                                            },
+                                        }}
+                                    >
                                         <Button className="hover-btn">
                                             Sign Up Now
                                         </Button>
-                                    </SignInButton>
-                                    <SignInButton>
+                                    </SignUpButton>
+                                    <SignInButton
+                                        mode="modal"
+                                        appearance={{
+                                            elements: {
+                                                card: {
+                                                    backgroundColor:
+                                                        "hsl(var(--accent))",
+                                                    border: "1px solid rgba(255, 255, 255, 0.15)",
+                                                    borderRadius: "12px",
+                                                    padding: "1.25rem",
+                                                    animation:
+                                                        "fadeIn 0.5s ease-out",
+                                                    boxShadow:
+                                                        "0 0 12px rgba(255, 255, 255, 0.4), 0 0 20px rgba(255, 255, 255, 0.2)",
+                                                    color: "hsl(var(--foreground))",
+                                                },
+                                                headerTitle: {
+                                                    color: "white",
+                                                    fontSize: "1.25rem",
+                                                    fontWeight: "600",
+                                                },
+                                                formFieldInput: {
+                                                    backgroundColor:
+                                                        "transparent",
+                                                    color: "white",
+                                                    border: "1px solid rgba(255,255,255,0.2)",
+                                                    borderRadius: "8px",
+                                                    padding: "0.75rem",
+                                                    boxShadow:
+                                                        "0 0 8px rgba(255,255,255,0.2)",
+                                                },
+                                                formFieldLabel: {
+                                                    color: "hsl(var(--foreground))",
+                                                },
+                                                formButtonPrimary: {
+                                                    backgroundColor: "#10b981",
+                                                    color: "#fff",
+                                                    borderRadius: "8px",
+                                                    padding: "0.75rem",
+                                                    fontWeight: "600",
+                                                    boxShadow:
+                                                        "0 0 12px rgba(255, 255, 255, 0.5)",
+                                                },
+                                                socialButtonsBlockButton: {
+                                                    backgroundColor:
+                                                        "transparent",
+                                                    border: "1px solid rgba(255, 255, 255, 0.2)",
+                                                    color: "#fff",
+                                                    boxShadow:
+                                                        "0 0 8px rgba(255,255,255,0.3)",
+                                                },
+                                                footerActionText: {
+                                                    color: "rgba(255,255,255,0.6)",
+                                                },
+                                                footerActionLink: {
+                                                    color: "#3b82f6",
+                                                    fontWeight: "500",
+                                                },
+
+                                                footer: {
+                                                    display: "none",
+                                                },
+                                            },
+                                        }}
+                                    >
                                         <Button className="hover-btn">
                                             Sign In Now
                                         </Button>

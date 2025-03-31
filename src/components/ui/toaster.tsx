@@ -49,9 +49,6 @@ import { useToast } from "@/hooks/use-toast";
 export function Toaster() {
     const { toasts } = useToast();
 
-    console.log("TOASTER COMPONENT");
-    console.log(toasts);
-
     return (
         <ToastProvider>
             {toasts.map(({ id, title, description, action, ...props }) => (
