@@ -7,7 +7,6 @@ import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
@@ -87,6 +86,30 @@ export default function FoodLogDialog({
                         </TabsList>
 
                         <TabsContent value="default">
+                            <div className="hover-card my-4 p-4 rounded-lg border border-white/10 shadow-md">
+                                {setFood ? (
+                                    <div className="flex flex-col gap-2">
+                                        <h1 className="text-xl font-semibold">
+                                            {food?.food_name}
+                                        </h1>
+                                        <p className="text-sm text-muted-foreground">
+                                            {food?.description}
+                                        </p>
+                                        <p className="text-sm text-muted-foreground">
+                                            Calories: {food?.calories}
+                                        </p>
+                                        <p className="text-sm text-muted-foreground">
+                                            Protein: {food?.calories}
+                                        </p>
+                                        <p className="text-sm text-muted-foreground">
+                                            Portion: {food?.default_quantity}{" "}
+                                            {food?.portion_size}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <p></p>
+                                )}
+                            </div>
                             <Card className="rounded-xl border border-white/10 shadow-md glow-box mt-5">
                                 <Button
                                     onClick={handleLogFood}
@@ -98,6 +121,30 @@ export default function FoodLogDialog({
                         </TabsContent>
 
                         <TabsContent value="custom">
+                            <div className="hover-card my-4 p-4 rounded-lg border border-white/10 shadow-md">
+                                {setFood ? (
+                                    <div className="flex flex-col gap-2">
+                                        <h1 className="text-xl font-semibold">
+                                            {food?.food_name}
+                                        </h1>
+                                        <p className="text-sm text-muted-foreground">
+                                            {food?.description}
+                                        </p>
+                                        <p className="text-sm text-muted-foreground">
+                                            Calories: {food?.calories}
+                                        </p>
+                                        <p className="text-sm text-muted-foreground">
+                                            Protein: {food?.calories}
+                                        </p>
+                                        <p className="text-sm text-muted-foreground">
+                                            Portion: {food?.default_quantity}{" "}
+                                            {food?.portion_size}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <p></p>
+                                )}
+                            </div>
                             <Card className="rounded-xl border border-white/10 shadow-md hover-card">
                                 <CardHeader>
                                     <CardTitle>Custom</CardTitle>
@@ -106,6 +153,7 @@ export default function FoodLogDialog({
                                         size
                                     </CardDescription>
                                 </CardHeader>
+
                                 <CardContent className="space-y-2">
                                     <div className="flex items-center gap-2">
                                         <Input
@@ -128,14 +176,14 @@ export default function FoodLogDialog({
                                         <span>{food?.portion_size}s</span>
                                     </div>
                                 </CardContent>
-                                <CardFooter>
-                                    <Button
-                                        className="hover-btn w-full mt-2"
-                                        onClick={handleLogFood}
-                                    >
-                                        Log Custom Amount
-                                    </Button>
-                                </CardFooter>
+                            </Card>
+                            <Card className="rounded-xl border border-white/10 shadow-md glow-box mt-5">
+                                <Button
+                                    onClick={handleLogFood}
+                                    className="hover-btn w-full"
+                                >
+                                    Log Custom Amount
+                                </Button>
                             </Card>
                         </TabsContent>
                     </Tabs>

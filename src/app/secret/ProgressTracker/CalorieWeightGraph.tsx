@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { TrendingUp } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import {
     LineChart,
     Line,
@@ -9,13 +8,9 @@ import {
     YAxis,
     CartesianGrid,
     ResponsiveContainer,
+    ReferenceLine,
 } from "recharts";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import {
     ChartConfig,
     ChartContainer,
@@ -24,49 +19,66 @@ import {
 } from "@/components/ui/chart";
 import EditBodyStats from "./EditBodyStats/EditBodyStats";
 import BodyStats from "../../components/BodyStats";
-
-const data = [
-    { date: "Mon", calories: 2100, weight: 70 },
-    { date: "Tue", calories: 2300, weight: 70.2 },
-    { date: "Wed", calories: 1950, weight: 69.8 },
-    { date: "Thu", calories: 2200, weight: 69.9 },
-    { date: "Fri", calories: 2400, weight: 70.1 },
-];
+import { getPreviousWeeksCaloricConsumption } from "@/app/actions/actions";
+import { CaloricConsumptionInterface } from "@/app/interfaces";
+import { format, subDays } from "date-fns";
 
 const chartConfig = {
     calories: {
         label: "Calories",
         color: "hsl(var(--chart-1))",
     },
-    weight: {
-        label: "Weight",
+    goal: {
+        label: "Goal",
         color: "hsl(var(--chart-2))",
     },
 } satisfies ChartConfig;
 
 export default function CalorieWeightGraph() {
+    const [entries, setEntries] = useState<CaloricConsumptionInterface[]>([]);
+
+    useEffect(() => {
+        async function getCalories() {
+            const rawEntries = await getPreviousWeeksCaloricConsumption();
+            console.log("rawEntries: " + rawEntries);
+            const dateMap = new Map(
+                rawEntries.map((e) => [e.date, e.calories])
+            );
+
+            const fullWeek = [];
+            for (let i = 0; i < 7; i++) {
+                const date = format(subDays(new Date(), 6 - i), "yyyy-MM-dd");
+                fullWeek.push({
+                    date,
+                    calories: dateMap.get(date),
+                    goal: 1712,
+                });
+            }
+            setEntries(fullWeek);
+            return fullWeek;
+        }
+
+        getCalories().then((entriesData) => {
+            console.log("Calories from past week:", entriesData);
+        });
+    }, []);
+
     return (
         <>
             <Card className="hover-card">
-                {/* <CardHeader> */}
-                {/* <CardTitle></CardTitle> */}
-
-                {/* <Separator /> */}
-
                 <Card className="hover-card h-full">
                     <h2 className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
                         Progress Tracker
                     </h2>
                     <br />
                     <CardDescription>
-                        Calories and Weight Over Time
+                        Calories over the last week
                     </CardDescription>
-                    {/* </CardHeader> */}
                     <CardContent>
                         <ChartContainer config={chartConfig}>
                             <ResponsiveContainer width="100%" height={300}>
                                 <LineChart
-                                    data={data}
+                                    data={entries}
                                     margin={{
                                         top: 5,
                                         right: 20,
@@ -81,8 +93,17 @@ export default function CalorieWeightGraph() {
                                     <XAxis
                                         dataKey="date"
                                         tickLine={false}
-                                        axisLine={false}
+                                        axisLine={true}
                                         tickMargin={8}
+                                        tickFormatter={(value) =>
+                                            new Date(
+                                                value + "T00:00:00"
+                                            ).toLocaleDateString("en-US", {
+                                                month: "short",
+                                                day: "numeric",
+                                                timeZone: "UTC",
+                                            })
+                                        }
                                     />
                                     <YAxis />
                                     <ChartTooltip
@@ -94,33 +115,31 @@ export default function CalorieWeightGraph() {
                                         type="monotone"
                                         stroke="var(--graph-1)"
                                         strokeWidth={2}
-                                        dot={false}
+                                        dot={{ r: 3, strokeWidth: 2 }}
+                                        activeDot={{ r: 6 }}
                                     />
                                     <Line
-                                        dataKey="weight"
+                                        dataKey="goal"
                                         type="monotone"
                                         stroke="var(--graph-2)"
                                         strokeWidth={2}
                                         dot={false}
                                     />
+                                    {/* <ReferenceLine
+                                        y={1712}
+                                        stroke="var(--graph-2)"
+                                        strokeWidth={2}
+                                        label={{
+                                            value: "Calorie Goal",
+                                            position: "top",
+                                            fill: "var(--graph-2)",
+                                            fontSize: 12,
+                                        }}
+                                    /> */}
                                 </LineChart>
                             </ResponsiveContainer>
                         </ChartContainer>
                     </CardContent>
-                    <CardFooter>
-                        <div className="flex w-full items-start gap-2 text-sm">
-                            <div className="grid gap-2">
-                                <div className="flex items-center gap-2 font-medium leading-none">
-                                    Trending up by 5.2% this week{" "}
-                                    <TrendingUp className="h-4 w-4" />
-                                </div>
-                                <div className="flex items-center gap-2 leading-none text-muted-foreground">
-                                    Tracking your calorie intake and weight
-                                    changes
-                                </div>
-                            </div>
-                        </div>
-                    </CardFooter>
                 </Card>
 
                 <Card className="hover-card mt-2">

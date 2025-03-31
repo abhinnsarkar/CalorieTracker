@@ -56,3 +56,8 @@ export interface NutritionRequirementsInterface {
     potassium: number | null;
     iron: number | null;
 }
+
+export interface CaloricConsumptionInterface {
+    date: string; // in YYYY-MM-DD format
+    calories: number;
+}

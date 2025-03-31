@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { FoodItemInterface } from "@/app/interfaces";
 import FoodLogDialog from "@/app/components/FoodLogDialog";
+import { OpenInNew } from "@mui/icons-material";
+import Link from "next/link";
 
 function FoodSearchList({
     filteredFoods,
@@ -35,19 +37,26 @@ function FoodSearchList({
                     >
                         <div className="flex flex-row items-center justify-between w-full px-2">
                             <span className="text-sm text-white truncate">
-                                {food.food_name}
+                                <Link href={`/foods/${food.food_id}`}>
+                                    {food.food_name}
+                                </Link>
                             </span>
-                            <AddIcon
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    setSelectedFood(food);
-                                    setDialogOpen(true);
-                                    console.log(
-                                        "Dialog opened from AddIcon click"
-                                    );
-                                }}
-                                className="hover-icon cursor-pointer"
-                            />
+                            <div className="flex flex-row items-center">
+                                <AddIcon
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setSelectedFood(food);
+                                        setDialogOpen(true);
+                                        console.log(
+                                            "Dialog opened from AddIcon click"
+                                        );
+                                    }}
+                                    className="hover-icon cursor-pointer"
+                                />
+                                <Link href={`/foods/${food.food_id}`}>
+                                    <OpenInNew className=" ml-6 hover-icon cursor-pointer" />
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 ))}

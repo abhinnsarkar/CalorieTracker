@@ -7,6 +7,7 @@ import {
     FoodItemInterface,
     TodaysFoodEntryInterface,
     TodaysFoodToalsInterface,
+    CaloricConsumptionInterface,
 } from "@/app/interfaces";
 
 export async function capitalizeFirstLetter(value: string): Promise<string> {
@@ -432,13 +433,19 @@ export async function logFoodEntry({
         throw new Error("User not found");
     }
 
+    const now = new Date();
+    const offsetMs = now.getTimezoneOffset() * 60 * 1000;
+    const localDate = new Date(now.getTime() - offsetMs);
+
+    console.log("now (UTC)", now);
+    console.log("localDate (adjusted to local calendar day)", localDate);
     try {
         await prisma.userFoods.create({
             data: {
                 user_id: userId,
                 food_id: food_id,
                 quantity: quantity,
-                date_logged: new Date(),
+                date_logged: localDate,
             },
         });
 
@@ -609,5 +616,71 @@ export async function deleteLoggedFood(log_id: string): Promise<boolean> {
     } catch (error) {
         console.error("Error deleting logged food:", error);
         return false;
+    }
+}
+
+export async function getPreviousWeeksCaloricConsumption(): Promise<
+    CaloricConsumptionInterface[]
+> {
+    try {
+        const user = await currentUser();
+        const userId = user?.id as string;
+
+        if (!userId) {
+            throw new Error("User not found");
+        }
+
+        const todaysDate = new Date();
+        const startDate = new Date(
+            todaysDate.getFullYear(),
+            todaysDate.getMonth(),
+            todaysDate.getDate() - 7
+        );
+
+        console.log("startDate", startDate);
+
+        const entries = await prisma.userFoods.findMany({
+            where: {
+                user_id: userId,
+                date_logged: {
+                    gte: startDate,
+                    lte: todaysDate,
+                },
+            },
+            select: {
+                quantity: true,
+                date_logged: true,
+                food: {
+                    select: {
+                        calories: true,
+                    },
+                },
+            },
+        });
+        console.log("Entries from past week actions ts:", entries);
+
+        const dailyTotals: { [date: string]: number } = {};
+
+        for (const entry of entries) {
+            const quantity =
+                entry.quantity instanceof Prisma.Decimal
+                    ? entry.quantity.toNumber()
+                    : Number(entry.quantity);
+            const calories = Number(entry.food.calories) * quantity;
+            const dateKey = entry.date_logged.toISOString().split("T")[0];
+            dailyTotals[dateKey] = (dailyTotals[dateKey] || 0) + calories;
+        }
+
+        const result: CaloricConsumptionInterface[] = Object.entries(
+            dailyTotals
+        ).map(([date, calories]) => ({
+            date,
+            calories,
+        }));
+        console.log("Calories from past week actions ts:", result);
+        return result;
+    } catch (error) {
+        console.error("Error fetching todays food entries:", error);
+        throw new Error("Failed to fetch todays food entries");
     }
 }
