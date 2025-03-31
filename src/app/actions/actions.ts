@@ -33,6 +33,8 @@ export async function createUser(formData: FormData): Promise<boolean> {
         | "active"
         | "superactive";
 
+    console.log("activity_level", activity_level);
+
     const parsedDob = dob ? new Date(dob) : null;
     const age = parsedDob
         ? new Date().getFullYear() - parsedDob.getFullYear()
@@ -56,9 +58,22 @@ export async function createUser(formData: FormData): Promise<boolean> {
         superactive: 1.9,
     };
 
+    const normalizedActivityLevel = activity_level.toLowerCase();
+
     const normalizedActivityLevelMultiplier =
-        activity_level != null ? activityMultipliers[activity_level] : 1.2;
+        activity_level != null
+            ? activityMultipliers[
+                  normalizedActivityLevel as keyof typeof activityMultipliers
+              ]
+            : 1.2;
+    console.log(
+        "normalizedActivityLevelMultiplier",
+        normalizedActivityLevelMultiplier
+    );
+    console.log("bmr", bmr);
+
     let maintenance_calories = bmr * normalizedActivityLevelMultiplier;
+    console.log("maintenance_calories", maintenance_calories);
 
     if (objective === "bulking") maintenance_calories += 500;
     if (objective === "cutting") maintenance_calories -= 500;
@@ -115,7 +130,7 @@ export async function createUser(formData: FormData): Promise<boolean> {
 
     try {
         // Create user in the database
-        await prisma.users.create({
+        const user = await prisma.users.create({
             data: {
                 user_id: userId,
                 dob: parsedDob,
@@ -137,6 +152,7 @@ export async function createUser(formData: FormData): Promise<boolean> {
             },
         });
 
+        console.log("User created:", user);
         revalidatePath("/");
         return true;
     } catch (err) {

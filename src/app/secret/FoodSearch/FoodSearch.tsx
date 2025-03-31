@@ -59,7 +59,7 @@ export default function FoodSearch() {
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         onFocus={openSearchOptions}
-                        className="pl-10 bg-accent/50 border-white/10 text-blue-100 placeholder:text-blue-300/50"
+                        className="pl-10 bg-accent/50 border-white/10 text-blue-100 placeholder:text-blue-300/50 hover-card"
                     />
                 </div>
 

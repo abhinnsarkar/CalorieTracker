@@ -27,7 +27,7 @@ function FoodSearchList({
                         key={
                             food.food_id ?? `${food.food_name}-${Math.random()}`
                         }
-                        className="w-full px-4 py-2 text-left text-blue-100 hover:bg-blue-400/10 transition-colors"
+                        className="w-full px-4 py-2 text-left text-blue-100 hover:bg-blue-400/10 transition-colors "
                         onClick={() => {
                             setSearch(food.food_name);
                             setIsDropdownOpen(false);
