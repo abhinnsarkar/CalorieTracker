@@ -17,7 +17,7 @@ function Column3({ food }: { food: FoodItemInterface }) {
             <h2 className="text-xl font-semibold text-center mb-2 bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
                 Instructions
             </h2>
-            <ListItems items={food?.instructions?.split(",") || []} />
+            <ListItems items={food?.instructions?.split(">>") || []} />
         </div>
     );
 }

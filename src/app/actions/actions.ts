@@ -50,22 +50,22 @@ export async function createUser(formData: FormData): Promise<boolean> {
             ? 88.362 + 13.397 * weight_kg + 4.799 * height_cm - 5.677 * age!
             : 447.593 + 9.247 * weight_kg + 3.098 * height_cm - 4.33 * age!; //female
 
-    const activityMultipliers = {
-        sedentary: 1.2,
-        light: 1.375,
-        moderate: 1.55,
-        active: 1.725,
-        superactive: 1.9,
-    };
-
-    const normalizedActivityLevel = activity_level.toLowerCase();
-
-    const normalizedActivityLevelMultiplier =
-        activity_level != null
-            ? activityMultipliers[
-                  normalizedActivityLevel as keyof typeof activityMultipliers
-              ]
-            : 1.2;
+    const normalizedActivityLevelMultiplier = (() => {
+        switch (activity_level?.toLowerCase()) {
+            case "sedentary":
+                return 1.2;
+            case "light":
+                return 1.375;
+            case "moderate":
+                return 1.55;
+            case "active":
+                return 1.725;
+            case "superactive":
+                return 1.9;
+            default:
+                return 1.2;
+        }
+    })();
     console.log(
         "normalizedActivityLevelMultiplier",
         normalizedActivityLevelMultiplier
@@ -272,6 +272,8 @@ export async function updateUserProfile(formData: FormData): Promise<boolean> {
     const height_cm = parseFloat(formData.get("height") as string);
     const weight_kg = parseFloat(formData.get("weight") as string);
 
+    console.log("formData", formData);
+
     // Handle the objective as a lowercase value for validation
     const objective = (formData.get("objective") as string)?.toLowerCase();
     const activity_level = formData.get("activityLevel") as
@@ -339,16 +341,22 @@ export async function updateUserProfile(formData: FormData): Promise<boolean> {
             ? 88.362 + 13.397 * weight_kg + 4.799 * height_cm - 5.677 * age
             : 447.593 + 9.247 * weight_kg + 3.098 * height_cm - 4.33 * age;
 
-    const activityMultipliers = {
-        sedentary: 1.2,
-        light: 1.375,
-        moderate: 1.55,
-        active: 1.725,
-        superactive: 1.9,
-    };
-
-    const normalizedActivityLevelMultiplier =
-        activity_level != null ? activityMultipliers[activity_level] : 1.2;
+    const normalizedActivityLevelMultiplier = (() => {
+        switch (activity_level?.toLowerCase()) {
+            case "sedentary":
+                return 1.2;
+            case "light":
+                return 1.375;
+            case "moderate":
+                return 1.55;
+            case "active":
+                return 1.725;
+            case "superactive":
+                return 1.9;
+            default:
+                return 1.2;
+        }
+    })();
     let maintenance_calories = bmr * normalizedActivityLevelMultiplier;
 
     if (objective === "bulking") maintenance_calories += 500;
@@ -399,6 +407,22 @@ export async function updateUserProfile(formData: FormData): Promise<boolean> {
     const sodium = 2300;
     const potassium = gender === "male" ? 3400 : 2600;
     const iron = gender === "male" ? 8 : 18;
+
+    console.log("Updated values:");
+    console.log("height_cm", height_cm);
+    console.log("weight_kg", weight_kg);
+    console.log("objective", originalObjective);
+    console.log("activity_level", normalizedActivityLevel);
+    console.log("activity_level_multiplier", normalizedActivityLevelMultiplier);
+    console.log("maintenance_calories", maintenance_calories);
+    console.log("protein", protein);
+    console.log("fats", fats);
+    console.log("carbs", carbs);
+    console.log("fiber", fiber);
+    console.log("sugar", sugar);
+    console.log("sodium", sodium);
+    console.log("potassium", potassium);
+    console.log("iron", iron);
 
     // Update the user profile in the database with recalculated values
     try {

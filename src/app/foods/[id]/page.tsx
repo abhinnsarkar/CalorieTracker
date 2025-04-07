@@ -46,7 +46,7 @@ export default async function Page({ params }: FoodPageProps) {
 
             {/* Content */}
             <div className="w-full px-4 md:px-12 py-8 flex justify-center">
-                <div className="flex flex-col md:flex-row gap-6 max-w-7xl w-full">
+                <div className="flex flex-col md:flex-row gap-6 max-w-7xl w-full h-[75vh]">
                     <Column1 food={food} />
                     <Column2 food={food} />
                     <Column3 food={food} />

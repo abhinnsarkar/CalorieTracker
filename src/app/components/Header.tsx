@@ -1,7 +1,9 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+// import { Button } from "@/components/ui/button";
+// import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
+import Image from "next/image";
+import icon from "./icon.png";
 
 export default function Header() {
     return (
@@ -10,14 +12,22 @@ export default function Header() {
                 {/* Left - Logo */}
                 <div className="flex items-center justify-start h-full">
                     <Link href={"/"}>
-                        <span className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
+                        <span className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent flex flex-row items-center">
+                            <Image
+                                src={icon}
+                                alt="logo"
+                                width={40}
+                                height={40}
+                                priority
+                                className="mr-2 rounded-full"
+                            />
                             BrownBite
                         </span>
                     </Link>
                 </div>
 
                 {/* Right - Auth */}
-                <div className="flex items-center justify-end h-full space-x-4">
+                {/* <div className="flex items-center justify-end h-full space-x-4">
                     <SignedOut>
                         <SignInButton mode="modal">
                             <Button variant="outline" className="hover-btn">
@@ -28,7 +38,7 @@ export default function Header() {
                     <SignedIn>
                         <UserButton afterSignOutUrl="/" />
                     </SignedIn>
-                </div>
+                </div> */}
             </div>
         </header>
     );
