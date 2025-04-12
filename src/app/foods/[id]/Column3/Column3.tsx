@@ -14,9 +14,7 @@ function Column3({ food }: { food: FoodItemInterface }) {
 
     return (
         <div className="hover-card flex-1 flex flex-col h-full p-4 overflow-y-auto rounded-lg space-y-4">
-            <h2 className="text-xl font-semibold text-center mb-2 bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
-                Instructions
-            </h2>
+            <h2 className="gradient-text mb-4 justify-center">Instructions</h2>
             <ListItems items={food?.instructions?.split(">>") || []} />
         </div>
     );

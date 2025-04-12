@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import icon from "./icon.png";
+import { SignedIn, UserButton } from "@clerk/nextjs";
 
 export default function Header() {
     return (
@@ -12,7 +13,7 @@ export default function Header() {
                 {/* Left - Logo */}
                 <div className="flex items-center justify-start h-full">
                     <Link href={"/"}>
-                        <span className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent flex flex-row items-center">
+                        <span className="text-xl gradient-text">
                             <Image
                                 src={icon}
                                 alt="logo"
@@ -35,10 +36,11 @@ export default function Header() {
                             </Button>
                         </SignInButton>
                     </SignedOut>
-                    <SignedIn>
-                        <UserButton afterSignOutUrl="/" />
-                    </SignedIn>
+                    
                 </div> */}
+                <SignedIn>
+                    <UserButton afterSignOutUrl="/" />
+                </SignedIn>
             </div>
         </header>
     );

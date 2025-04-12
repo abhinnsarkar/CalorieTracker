@@ -72,20 +72,19 @@ export default function Page() {
 
             {/* Title */}
             <div className="py-4 px-4 md:px-12">
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent text-center">
+                <h1 className="gradient-text !text-3xl font-bold justify-center">
                     All Foods({foods.length})
                 </h1>
             </div>
 
             <div className="space-y-4 w-full">
-                {/* <div className=" grid grid-cols-26"> */}
                 <div className="grid grid-cols-[repeat(26,_minmax(0,_1fr))] w-full">
                     {alphabet.map((letter) => (
                         <div
                             key={letter}
                             className={`hover-card border flex flex-col justify-center items-center h-24 w-full cursor-pointer ${
                                 selectedLetter === letter
-                                    ? "border-2 border-transparent bg-clip-border bg-gradient-to-r from-blue-300 to-blue-100"
+                                    ? "border-[3px] border-transparent bg-clip-border bg-gradient-to-r from-blue-300 to-blue-100 border-[#border-[3px]"
                                     : "border-white/10"
                             }`}
                             onClick={() => filterFoods(letter)}
