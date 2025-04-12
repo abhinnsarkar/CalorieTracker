@@ -16,9 +16,7 @@ function MacrosTable({ food }: { food: FoodItemInterface }) {
 
     return (
         <div>
-            <h2 className="text-xl font-semibold text-center mb-4 bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
-                Macros
-            </h2>
+            <h2 className="gradient-text mb-4 justify-center">Macros</h2>
             <div className="grid grid-cols-3 gap-4">
                 {facts.map((fact, index) => (
                     <div

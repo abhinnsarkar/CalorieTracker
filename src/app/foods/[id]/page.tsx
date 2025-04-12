@@ -39,7 +39,7 @@ export default async function Page({ params }: FoodPageProps) {
 
             {/* Title */}
             <div className="py-4 px-4 md:px-12">
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent text-center">
+                <h1 className="!text-3xl !font-bold gradient-text justify-center">
                     {food.food_name}
                 </h1>
             </div>
