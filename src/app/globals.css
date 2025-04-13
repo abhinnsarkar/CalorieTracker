@@ -295,7 +295,11 @@
 .gradient-text {
     font-size: 1.25rem; /* text-xl */
     font-weight: 600; /* font-semibold */
-    background: linear-gradient(to right, #93c5fd, #dbeafe); /* from-blue-300 to-blue-100 */
+    background: linear-gradient(
+        to right,
+        #93c5fd,
+        #dbeafe
+    ); /* from-blue-300 to-blue-100 */
     -webkit-background-clip: text; /* For Safari/Chrome */
     background-clip: text;
     color: transparent; /* text-transparent */

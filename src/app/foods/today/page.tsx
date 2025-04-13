@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import TodaysFoodItem from "./TodaysFoodItem";
+import { Refresher } from "@/app/components/Refresher";
 // import DeleteNotification from "./DeleteNotification";
 
 export default async function Page() {
@@ -12,6 +13,7 @@ export default async function Page() {
 
     return (
         <main className="container mx-auto px-4 pt-20 text-white space-y-8">
+            <Refresher />
             <div className="justify-start">
                 <Link href="/">
                     <Button className="hover-btn">
