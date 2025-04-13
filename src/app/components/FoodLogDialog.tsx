@@ -38,6 +38,8 @@ export default function FoodLogDialog({
         (s) => s.setIsReloadTodaysProgress
     );
 
+    const setIsReloadCalorieGraph = useStore((s) => s.setIsReloadCalorieGraph);
+
     useEffect(() => {
         if (food) setQuantity(food.default_quantity || 0);
     }, [food]);
@@ -56,6 +58,7 @@ export default function FoodLogDialog({
 
         if (success) {
             setIsReloadTodaysProgress(true);
+            setIsReloadCalorieGraph(true);
             close();
             RenderNotification({
                 title: "Food Logged",

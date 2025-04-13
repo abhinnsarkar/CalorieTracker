@@ -8,7 +8,6 @@ import {
     YAxis,
     CartesianGrid,
     ResponsiveContainer,
-    // ReferenceLine,
 } from "recharts";
 import { Card, CardContent, CardDescription } from "@/components/ui/card";
 import {
@@ -25,6 +24,7 @@ import {
 } from "@/app/actions/actions";
 import { CaloricConsumptionInterface } from "@/app/interfaces";
 import { format, subDays } from "date-fns";
+import { useStore } from "@/store/store";
 
 const chartConfig = {
     calories: {
@@ -39,6 +39,12 @@ const chartConfig = {
 
 export default function CalorieGraph() {
     const [entries, setEntries] = useState<CaloricConsumptionInterface[]>([]);
+    const isReloadCalorieGraph = useStore(
+        (state) => state.isReloadCalorieGraph
+    );
+    const setIsReloadCalorieGraph = useStore(
+        (state) => state.setIsReloadCalorieGraph
+    );
 
     useEffect(() => {
         async function getCalories() {
@@ -66,6 +72,38 @@ export default function CalorieGraph() {
 
         getCalories();
     }, []);
+
+    useEffect(() => {
+        if (isReloadCalorieGraph) {
+            async function refreshData() {
+                const rawEntries = await getPreviousWeeksCaloricConsumption();
+                const maintenanceCaloriesObj = await getMaintenanceCalories();
+                const maintenanceCalories =
+                    maintenanceCaloriesObj?.maintenance_calories;
+
+                const dateMap = new Map(
+                    rawEntries.map((e) => [e.date, e.calories])
+                );
+
+                const fullWeek = [];
+                for (let i = 0; i < 7; i++) {
+                    const date = format(
+                        subDays(new Date(), 6 - i),
+                        "yyyy-MM-dd"
+                    );
+                    fullWeek.push({
+                        date,
+                        calories: dateMap.get(date) ?? 0,
+                        goal: maintenanceCalories ?? 0,
+                    });
+                }
+                setEntries(fullWeek);
+                setIsReloadCalorieGraph(false); // ✅ reset flag
+            }
+
+            refreshData();
+        }
+    }, [isReloadCalorieGraph, setIsReloadCalorieGraph]);
 
     return (
         <>

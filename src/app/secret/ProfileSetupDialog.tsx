@@ -22,6 +22,7 @@ import HeightInput from "../components/HeightInput";
 import WeightInput from "../components/WeightInput";
 import { createUser } from "../actions/actions";
 import { RenderNotification } from "../components/RenderNotification";
+import { useStore } from "@/store/store";
 
 // Define the form schema with Zod
 const formSchema = z.object({
@@ -37,6 +38,11 @@ type FormSchema = z.infer<typeof formSchema>;
 
 export default function ProfileSetupDialog() {
     const [isOpen, setIsOpen] = useState(true); // State to control dialog visibility
+
+    const setIsLoadProfileAfterSetup = useStore(
+        (s) => s.setIsLoadProfileAfterSetup
+    );
+
     const form = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -84,6 +90,7 @@ export default function ProfileSetupDialog() {
         try {
             // Now you can pass the formData to createUser
             if (await createUser(formData)) {
+                setIsLoadProfileAfterSetup(true); //
                 RenderNotification({
                     title: "Profile Created Successfully",
                     description: "Your profile has been created successfully.",

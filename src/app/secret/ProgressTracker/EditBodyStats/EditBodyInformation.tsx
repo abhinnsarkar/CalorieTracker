@@ -22,6 +22,7 @@ import HeightInput from "@/app/components/HeightInput";
 import WeightInput from "../../../components/WeightInput";
 import { updateUserProfile } from "../../../actions/actions";
 import { RenderNotification } from "@/app/components/RenderNotification";
+import { useStore } from "@/store/store";
 
 // Define the form schema with Zod
 const formSchema = z.object({
@@ -40,6 +41,13 @@ function capitalizeFirstLetter(value: string): string {
 
 export default function EditBodyInformation() {
     const [formOpen, setFormOpen] = useState(false);
+    const setIsReloadBodyInformation = useStore(
+        (s) => s.setIsReloadBodyInformation
+    );
+    const setIsReloadCalorieGraph = useStore((s) => s.setIsReloadCalorieGraph);
+    const setIsReloadTodaysProgress = useStore(
+        (s) => s.setIsReloadTodaysProgress
+    );
 
     const form = useForm<FormSchema>({
         resolver: zodResolver(formSchema),
@@ -80,6 +88,9 @@ export default function EditBodyInformation() {
 
         // Call the update function
         if (await updateUserProfile(formData)) {
+            setIsReloadBodyInformation(true);
+            setIsReloadCalorieGraph(true);
+            setIsReloadTodaysProgress(true);
             RenderNotification({
                 title: "Edited Body Profile Successfully",
                 description: "The body profile was successfully updated.",
