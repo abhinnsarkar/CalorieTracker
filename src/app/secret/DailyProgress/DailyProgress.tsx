@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import {
@@ -10,6 +12,7 @@ import Link from "next/link";
 import MacroProgress from "./MacroProgress";
 import CircularProgress from "./CircularProgress";
 import { NutritionRequirementsInterface } from "@/app/interfaces";
+import { useStore } from "@/store/store";
 
 interface TodaysFoodEntryTotals {
     calories: number;
@@ -32,40 +35,53 @@ export default function DailyProgress() {
     const [calorieGoal, setCalorieGoal] = useState(0);
     const [caloriesConsumed, setCaloriesConsumed] = useState(0);
 
+    const isReloadTodaysProgress = useStore(
+        (state) => state.isReloadTodaysProgress
+    );
+    const setIsReloadTodaysProgress = useStore(
+        (state) => state.setIsReloadTodaysProgress
+    );
+
+    // Shared fetch logic for both initial load and reactive reload
+    const fetchNutritionStats = async () => {
+        const data = await getUserCurrentNutritionRequirements();
+
+        if (data) {
+            setNutritionRequirements({
+                maintenance_calories: data.maintenance_calories,
+                protein: data.protein,
+                carbs: data.carbs,
+                fats: data.fats,
+                fiber: data.fiber,
+                sugar: data.sugar,
+                sodium: data.sodium,
+                potassium: data.potassium,
+                iron: data.iron,
+            });
+
+            const totals = await getTodaysFoodTotals();
+            setTodaysTotals(totals);
+
+            const maintenance = data.maintenance_calories || 0;
+            const consumed = totals.calories || 0;
+
+            setCalorieGoal(maintenance);
+            setCaloriesConsumed(consumed);
+        }
+    };
+
+    // ✅ Initial fetch on mount
     useEffect(() => {
-        // Fetch the body stats when the component is mounted
-        const fetchNutritionStats = async () => {
-            const data = await getUserCurrentNutritionRequirements();
-
-            if (data) {
-                // Resolve promises for activity_level and objective
-
-                // Update the state with resolved values
-                setNutritionRequirements({
-                    maintenance_calories: data.maintenance_calories,
-                    protein: data.protein,
-                    carbs: data.carbs,
-                    fats: data.fats,
-                    fiber: data.fiber,
-                    sugar: data.sugar,
-                    sodium: data.sodium,
-                    potassium: data.potassium,
-                    iron: data.iron,
-                });
-
-                const totals = await getTodaysFoodTotals();
-                setTodaysTotals(totals);
-
-                const maintenance = data.maintenance_calories || 0;
-                const consumed = totals.calories || 0;
-
-                setCalorieGoal(maintenance);
-                setCaloriesConsumed(consumed);
-            }
-        };
-
         fetchNutritionStats();
-    }, []); // Empty dependency array ensures this runs once when the component
+    }, []);
+
+    // ✅ Triggered reload when Zustand flag is true
+    useEffect(() => {
+        if (isReloadTodaysProgress) {
+            fetchNutritionStats();
+            setIsReloadTodaysProgress(false);
+        }
+    }, [isReloadTodaysProgress, setIsReloadTodaysProgress]);
 
     return (
         <Card className="hover-card h-full">
@@ -101,7 +117,7 @@ export default function DailyProgress() {
                         value={todaysTotals?.fats || 0}
                         max={nutritionRequirements?.fats || 0}
                     />
-                    {/* <br /> */}
+
                     <h3 className="text-sm font-medium text-blue-200/70">
                         Micronutrients
                     </h3>
@@ -133,6 +149,7 @@ export default function DailyProgress() {
                     <br />
                 </div>
             </div>
+
             <Link href="/foods/today">
                 <Button className="hover-btn w-full mt-4">
                     View Today&apos;s Logged Foods <OpenInNewIcon />

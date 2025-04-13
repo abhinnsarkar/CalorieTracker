@@ -10,12 +10,10 @@ import { RenderNotification } from "@/app/components/RenderNotification";
 import { useStore } from "@/store/store";
 
 function TodaysFoodItem({ entry }: { entry: TodaysFoodEntryInterface }) {
-    const setShouldReload = useStore((state) => state.setShouldReload);
-    const handleRefresh = async (isSuccess: boolean) => {
-        if (isSuccess) {
-            setShouldReload(true); // trigger the refresher
-        }
-    };
+    const setIsReloadTodaysLoggedFoods = useStore(
+        (s) => s.setIsReloadTodaysLoggedFoods
+    );
+
     const deleteFoodEntry = async () => {
         const isSuccess = await deleteLoggedFood(entry.entry_id);
         if (isSuccess) {
@@ -24,7 +22,8 @@ function TodaysFoodItem({ entry }: { entry: TodaysFoodEntryInterface }) {
                 description: "The food log was successfully removed.",
                 variant: "success",
             });
-            handleRefresh(isSuccess);
+
+            setIsReloadTodaysLoggedFoods(true);
         } else {
             RenderNotification({
                 title: "Error Deleting Food Log",

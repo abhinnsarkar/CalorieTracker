@@ -1,10 +1,24 @@
 import { create } from "zustand";
 type Store = {
-    shouldReload: boolean;
-    setShouldReload: (value: boolean) => void;
+    isReloadTodaysLoggedFoods: boolean;
+    setIsReloadTodaysLoggedFoods: (value: boolean) => void;
+
+    isReloadTodaysProgress: boolean;
+    setIsReloadTodaysProgress: (value: boolean) => void;
+
+    isReloadCalorieGraph: boolean;
+    setIsReloadCalorieGraph: (value: boolean) => void;
 };
 
 export const useStore = create<Store>((set) => ({
-    shouldReload: false,
-    setShouldReload: (value) => set({ shouldReload: value }),
+    isReloadTodaysLoggedFoods: false,
+    setIsReloadTodaysLoggedFoods: (value) =>
+        set({ isReloadTodaysLoggedFoods: value }),
+    isReloadTodaysProgress: false,
+
+    setIsReloadTodaysProgress: (value) =>
+        set({ isReloadTodaysProgress: value }),
+
+    isReloadCalorieGraph: false,
+    setIsReloadCalorieGraph: (value) => set({ isReloadCalorieGraph: value }),
 }));

@@ -5,8 +5,10 @@ import { useRouter } from "next/navigation";
 import { useStore } from "@/store/store";
 
 export function Refresher() {
-    const shouldReload = useStore((state) => state.shouldReload);
-    const setShouldReload = useStore((state) => state.setShouldReload);
+    const shouldReload = useStore((state) => state.isReloadTodaysLoggedFoods);
+    const setShouldReload = useStore(
+        (state) => state.setIsReloadTodaysLoggedFoods
+    );
     const router = useRouter();
 
     useEffect(() => {
