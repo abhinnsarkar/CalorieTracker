@@ -17,12 +17,13 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { FoodItemInterface } from "@/app/interfaces";
 import { logFoodEntry } from "@/app/actions/actions";
 import { RenderNotification } from "@/app/components/RenderNotification";
+import { useStore } from "@/store/store";
 
 export default function FoodLogDialog({
     open,
     onOpenChange,
     food,
-    setFood, // optional, used to clear selectedFood
+    setFood,
 }: {
     open: boolean;
     onOpenChange: (open: boolean) => void;
@@ -32,6 +33,12 @@ export default function FoodLogDialog({
     const [quantity, setQuantity] = useState<number>(
         food?.default_quantity || 0
     );
+
+    const setIsReloadTodaysProgress = useStore(
+        (s) => s.setIsReloadTodaysProgress
+    );
+
+    const setIsReloadCalorieGraph = useStore((s) => s.setIsReloadCalorieGraph);
 
     useEffect(() => {
         if (food) setQuantity(food.default_quantity || 0);
@@ -50,6 +57,8 @@ export default function FoodLogDialog({
         });
 
         if (success) {
+            setIsReloadTodaysProgress(true);
+            setIsReloadCalorieGraph(true);
             close();
             RenderNotification({
                 title: "Food Logged",
