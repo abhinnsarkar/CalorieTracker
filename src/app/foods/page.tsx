@@ -41,9 +41,14 @@ export default function Page() {
     return (
         <main className="container mx-auto layout-x-padding pt-20">
             <div className="justify-start">
-                <Button className="hover-btn" onClick={handleBackToDashboard}>
-                    <ArrowBackIosIcon />
-                    Back to Dashboard
+                <Button
+                    className="hover-btn w-full !justify-start sm:!w-auto "
+                    onClick={handleBackToDashboard}
+                >
+                    <div className="sm:justify-start">
+                        <ArrowBackIosIcon />
+                        Back to Dashboard
+                    </div>
                 </Button>
             </div>
 
@@ -54,7 +59,8 @@ export default function Page() {
             </div>
 
             <div className="space-y-4 w-full">
-                <div className="grid grid-cols-[repeat(26,_minmax(0,_1fr))] w-full">
+                {/* Desktop Grid */}
+                <div className="hidden sm:grid grid-cols-[repeat(26,_minmax(0,_1fr))] w-full">
                     {alphabet.map((letter) => (
                         <div
                             key={letter}
@@ -70,6 +76,25 @@ export default function Page() {
                             </h2>
                         </div>
                     ))}
+                </div>
+
+                {/* Mobile Dropdown */}
+                <div className="sm:hidden w-full">
+                    <select
+                        id="letter"
+                        name="letter"
+                        title="Filter by letter"
+                        className="w-full p-3 rounded bg-slate-800 text-white border border-white/10"
+                        onChange={(e) => filterFoods(e.target.value)}
+                        value={selectedLetter ?? ""}
+                    >
+                        <option value="">Select Letter</option>
+                        {alphabet.map((letter) => (
+                            <option key={letter} value={letter}>
+                                {letter}
+                            </option>
+                        ))}
+                    </select>
                 </div>
 
                 {selectedLetter && (

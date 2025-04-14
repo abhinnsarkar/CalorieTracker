@@ -1,12 +1,3 @@
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Label } from "@/components/ui/label";
 
 interface ObjectiveDropdownProps {
@@ -23,36 +14,27 @@ const ObjectiveDropdown = ({
             <Label htmlFor="objective" className="text-right">
                 Objective
             </Label>
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="col-span-3">
-                        <DropdownMenuLabel>
-                            {selectedObjective || "Select Objective"}
-                        </DropdownMenuLabel>
-                        <ArrowDropDownIcon />
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                    <DropdownMenuItem
-                        className="hover-menu-item"
-                        onClick={() => setSelectedObjective("Cutting")}
-                    >
-                        Cutting
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                        className="hover-menu-item"
-                        onClick={() => setSelectedObjective("Maintain")}
-                    >
-                        Maintain
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                        className="hover-menu-item"
-                        onClick={() => setSelectedObjective("Bulking")}
-                    >
-                        Bulking
-                    </DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
+            <select
+                title="Objective"
+                name="objective"
+                id="objective"
+                className="col-span-3 rounded-md border bg-background p-2 text-foreground focus:ring-0 "
+                value={selectedObjective}
+                onChange={(e) => setSelectedObjective(e.target.value)}
+            >
+                <option value="" className="text-center justify-center">
+                    Select Objective
+                </option>
+                <option value="Cutting" className="text-center justify-center">
+                    Cutting
+                </option>
+                <option value="Maintain" className="text-center justify-center">
+                    Maintain
+                </option>
+                <option value="Bulking" className="text-center justify-center">
+                    Bulking
+                </option>
+            </select>
         </div>
     );
 };

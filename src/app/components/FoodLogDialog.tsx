@@ -3,13 +3,7 @@
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import CloseIcon from "@mui/icons-material/Close";
@@ -18,6 +12,7 @@ import { FoodItemInterface } from "@/app/interfaces";
 import { logFoodEntry } from "@/app/actions/actions";
 import { RenderNotification } from "@/app/components/RenderNotification";
 import { useStore } from "@/store/store";
+import { Separator } from "@/components/ui/separator";
 
 export default function FoodLogDialog({
     open,
@@ -76,7 +71,7 @@ export default function FoodLogDialog({
 
     return (
         <Dialog open={open} onOpenChange={close}>
-            <DialogContent className="p-6 rounded-xl shadow-lg">
+            <DialogContent className="p-6 rounded-xl shadow-lg w-[90%] sm:w-full hover-dialog">
                 <div className="flex flex-row justify-end items-center">
                     <CloseIcon className="hover-icon" onClick={close} />
                 </div>
@@ -104,6 +99,7 @@ export default function FoodLogDialog({
                                         <p className="text-sm text-muted-foreground">
                                             {food?.description}
                                         </p>
+
                                         <p className="text-sm text-muted-foreground">
                                             Calories: {food?.calories}
                                         </p>
@@ -137,6 +133,7 @@ export default function FoodLogDialog({
                                         <h1 className="text-xl font-semibold">
                                             {food?.food_name}
                                         </h1>
+                                        {/* <p className="text-sm text-muted-foreground sm:max-h-none max-h-[50px] overflow-y-auto"> */}
                                         <p className="text-sm text-muted-foreground">
                                             {food?.description}
                                         </p>
@@ -151,21 +148,43 @@ export default function FoodLogDialog({
                                             {food?.portion_size}
                                         </p>
                                     </div>
+                                    <Separator className="my-2 hover-icon" />
+                                    <div className="flex flex-col gap-2 items-start text-left">
+                                        <p className="text-sm text-muted-foreground">
+                                            Set a specific quantity based on
+                                            serving size
+                                        </p>
+                                        <div className="flex items-center gap-2">
+                                            <Input
+                                                className="w-fit"
+                                                type="text"
+                                                inputMode="numeric"
+                                                pattern="[0-9]*"
+                                                onWheel={(e) =>
+                                                    e.currentTarget.blur()
+                                                }
+                                                onChange={(e) => {
+                                                    const val = e.target.value;
+                                                    const num = parseInt(val);
+                                                    setQuantity(
+                                                        isNaN(num) ? 0 : num
+                                                    );
+                                                }}
+                                                value={quantity || ""}
+                                            />
+                                            <span>{food?.portion_size}s</span>
+                                        </div>
+                                    </div>
                                 </div>
                             ) : (
-                                <></>
-                            )}
-
-                            <Card className="rounded-xl border border-white/10 shadow-md hover-card">
-                                <CardHeader>
-                                    <CardTitle>Custom</CardTitle>
-                                    <CardDescription>
+                                <div className="flex flex-col gap-2 items-start text-left hover-card my-4">
+                                    <h1 className="text-xl font-semibold">
+                                        Custom
+                                    </h1>
+                                    <p className="text-sm text-muted-foreground">
                                         Set a specific quantity based on serving
                                         size
-                                    </CardDescription>
-                                </CardHeader>
-
-                                <CardContent className="space-y-2">
+                                    </p>
                                     <div className="flex items-center gap-2">
                                         <Input
                                             className="w-fit"
@@ -186,16 +205,15 @@ export default function FoodLogDialog({
                                         />
                                         <span>{food?.portion_size}s</span>
                                     </div>
-                                </CardContent>
-                            </Card>
-                            <Card className="rounded-xl border border-white/10 shadow-md glow-box mt-5">
-                                <Button
-                                    onClick={handleLogFood}
-                                    className="hover-btn w-full"
-                                >
-                                    Log Custom Amount
-                                </Button>
-                            </Card>
+                                </div>
+                            )}
+
+                            <Button
+                                onClick={handleLogFood}
+                                className="hover-btn w-full"
+                            >
+                                Log Custom Amount
+                            </Button>
                         </TabsContent>
                     </Tabs>
                 </div>

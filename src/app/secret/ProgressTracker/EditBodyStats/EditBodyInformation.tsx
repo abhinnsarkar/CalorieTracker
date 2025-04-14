@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -60,6 +60,15 @@ export default function EditBodyInformation() {
         mode: "onChange",
     });
 
+    const watchedObjective = useWatch({
+        control: form.control,
+        name: "objective",
+    });
+    const watchedActivityLevel = useWatch({
+        control: form.control,
+        name: "activityLevel",
+    });
+
     // Custom submit handler for the form
     const handleFormSubmit = async (event: React.FormEvent) => {
         event.preventDefault(); // Prevent the default form submission
@@ -115,7 +124,7 @@ export default function EditBodyInformation() {
             </Button>
             <Dialog open={formOpen || false}>
                 {/* <DialogContent className="sm:max-w-[425px] hover-dialog bg-white p-4 shadow-lg"> */}
-                <DialogContent className="hover-dialog">
+                <DialogContent className="hover-dialog !w-[90%] sm:w-full">
                     <DialogHeader>
                         <div className="flex flex-row justify-between">
                             <DialogTitle className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
@@ -127,7 +136,7 @@ export default function EditBodyInformation() {
                             />
                         </div>
 
-                        <DialogDescription>
+                        <DialogDescription className="text-sm text-gray-500 justify-start flex flex-row ">
                             Update your body information
                         </DialogDescription>
                     </DialogHeader>
@@ -138,7 +147,7 @@ export default function EditBodyInformation() {
                             className="space-y-4"
                         >
                             <ObjectiveDropdown
-                                selectedObjective={form.watch("objective")}
+                                selectedObjective={watchedObjective}
                                 setSelectedObjective={(objective) =>
                                     form.setValue(
                                         "objective",
@@ -151,9 +160,7 @@ export default function EditBodyInformation() {
                             />
 
                             <ActivityLevelPicker
-                                selectedActivityLevel={form.watch(
-                                    "activityLevel"
-                                )}
+                                selectedActivityLevel={watchedActivityLevel}
                                 setSelectedActivityLevel={(activityLevel) =>
                                     form.setValue(
                                         "activityLevel",
@@ -187,7 +194,7 @@ export default function EditBodyInformation() {
                                 <Button
                                     type="submit"
                                     disabled={!form.formState.isValid}
-                                    className="hover-btn"
+                                    className="hover-btn w-full"
                                 >
                                     Update Profile
                                 </Button>
