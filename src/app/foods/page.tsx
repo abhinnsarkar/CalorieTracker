@@ -1,15 +1,19 @@
 "use client";
-import Link from "next/link";
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { getAllFoods } from "../actions/actions";
 import { FoodItemInterface } from "../interfaces";
 import AllFoodsListItem from "./AllFoodsListItem";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
     const [foods, setFoods] = useState<FoodItemInterface[]>([]);
     const [allFoods, setAllFoods] = useState<FoodItemInterface[]>([]);
+    const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
+
+    const router = useRouter();
 
     useEffect(() => {
         async function fetchFoods() {
@@ -20,36 +24,7 @@ export default function Page() {
         fetchFoods();
     }, []);
 
-    const alphabet = [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J",
-        "K",
-        "L",
-        "M",
-        "N",
-        "O",
-        "P",
-        "Q",
-        "R",
-        "S",
-        "T",
-        "U",
-        "V",
-        "W",
-        "X",
-        "Y",
-        "Z",
-    ];
-
-    const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
     const filterFoods = (letter: string) => {
         setSelectedLetter(letter);
@@ -59,21 +34,22 @@ export default function Page() {
         setFoods(filtered);
     };
 
+    const handleBackToDashboard = () => {
+        router.push("/"); // ✅ always go back to the dashboard
+    };
+
     return (
         <main className="container mx-auto layout-x-padding pt-20">
             <div className="justify-start">
-                <Link href="/">
-                    <Button className="hover-btn">
-                        <ArrowBackIosIcon />
-                        Back to Dashboard
-                    </Button>
-                </Link>
+                <Button className="hover-btn" onClick={handleBackToDashboard}>
+                    <ArrowBackIosIcon />
+                    Back to Dashboard
+                </Button>
             </div>
 
-            {/* Title */}
             <div className="py-4 px-4 md:px-12">
                 <h1 className="gradient-text !text-3xl font-bold justify-center">
-                    All Foods({foods.length})
+                    All Foods ({foods.length})
                 </h1>
             </div>
 
@@ -84,7 +60,7 @@ export default function Page() {
                             key={letter}
                             className={`hover-card border flex flex-col justify-center items-center h-24 w-full cursor-pointer ${
                                 selectedLetter === letter
-                                    ? "border-[3px] border-transparent bg-clip-border bg-gradient-to-r from-blue-300 to-blue-100 border-[#border-[3px]"
+                                    ? "border-[3px] border-transparent bg-clip-border bg-gradient-to-r from-blue-300 to-blue-100"
                                     : "border-white/10"
                             }`}
                             onClick={() => filterFoods(letter)}
@@ -95,6 +71,7 @@ export default function Page() {
                         </div>
                     ))}
                 </div>
+
                 {selectedLetter && (
                     <button
                         onClick={() => {
@@ -106,7 +83,9 @@ export default function Page() {
                         Clear Filter
                     </button>
                 )}
+
                 <br />
+
                 {foods.map((food) => (
                     <AllFoodsListItem key={food.food_id} food={food} />
                 ))}

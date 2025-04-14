@@ -1,5 +1,11 @@
 import { create } from "zustand";
 type Store = {
+    previousRoute: string;
+    setPreviousRoute: (route: string) => void;
+
+    backBtnLabel: string;
+    setBackBtnLabel: (label: string) => void;
+
     isLoadProfileAfterSetup: boolean;
     setIsLoadProfileAfterSetup: (value: boolean) => void;
 
@@ -17,6 +23,12 @@ type Store = {
 };
 
 export const useStore = create<Store>((set) => ({
+    previousRoute: "",
+    setPreviousRoute: (route) => set({ previousRoute: route }),
+
+    backBtnLabel: "",
+    setBackBtnLabel: (label) => set({ backBtnLabel: label }),
+
     isLoadProfileAfterSetup: false,
     setIsLoadProfileAfterSetup: (value) =>
         set({ isLoadProfileAfterSetup: value }),
