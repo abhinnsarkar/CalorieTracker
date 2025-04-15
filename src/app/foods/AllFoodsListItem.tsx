@@ -22,10 +22,10 @@ function AllFoodsListItem({ food }: { food: FoodItemInterface }) {
     };
 
     return (
-        <div className="hover-card border flex flex-col layout-x-padding">
+        <div className="hover-card border flex flex-col layout-x-padding !my-4">
             <div className="w-full">
-                <div className="flex flex-row w-full">
-                    <div className="flex flex-col space-y-1 w-1/2 sm:w-1/4">
+                <div className="flex flex-row w-full flex-wrap md:flex-nowrap">
+                    <div className="flex flex-col space-y-1 w-1/2 md:w-1/4 ">
                         <h2 className="text-lg font-bold text-blue-100">
                             {food.food_name}
                         </h2>
@@ -41,8 +41,9 @@ function AllFoodsListItem({ food }: { food: FoodItemInterface }) {
                         </p>
                     </div>
 
-                    <div className="hidden sm:grid grid-flow-col auto-cols-max gap-4 w-1/2 justify-center ">
+                    <div className="hidden md:grid md:grid-cols-4 md:grid-rows-2 md:gap-4 md:w-1/2 md:justify-start ">
                         {[
+                            { label: "Protein", value: `${food.protein}g` },
                             { label: "Carbs", value: `${food.carbs}g` },
                             { label: "Fats", value: `${food.fats}g` },
                             { label: "Fiber", value: `${food.fiber}g` },
@@ -53,7 +54,7 @@ function AllFoodsListItem({ food }: { food: FoodItemInterface }) {
                         ].map((fact, index) => (
                             <div
                                 key={index}
-                                className="hover-card text-center px-2"
+                                className="hover-card text-center px-2 min-w-[80px] break-words"
                             >
                                 <p className="text-gray-500 text-xs font-semibold">
                                     {fact.label}
@@ -65,7 +66,7 @@ function AllFoodsListItem({ food }: { food: FoodItemInterface }) {
                         ))}
                     </div>
 
-                    <div className="w-1/2 sm:w-1/4 flex justify-end items-center mt-2 md:mt-0">
+                    <div className=" w-1/2 md:w-1/4 flex justify-end items-center mt-2 md:mt-0">
                         <div className="flex flex-col items-end space-y-1">
                             <OpenInNewIcon
                                 onClick={() => handleNavigate(food.food_id)}

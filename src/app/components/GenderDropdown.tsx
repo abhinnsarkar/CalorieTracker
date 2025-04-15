@@ -1,12 +1,12 @@
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+// import {
+//     DropdownMenu,
+//     DropdownMenuContent,
+//     DropdownMenuItem,
+//     DropdownMenuLabel,
+//     DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
+// import { Button } from "@/components/ui/button";
+// import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { Label } from "@/components/ui/label";
 
 interface GenderDropdownProps {
@@ -23,30 +23,24 @@ const GenderDropdown = ({
             <Label htmlFor="gender" className="text-right">
                 Gender
             </Label>
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="col-span-3">
-                        <DropdownMenuLabel>
-                            {selectedGender || "Select Gender"}
-                        </DropdownMenuLabel>
-                        <ArrowDropDownIcon />
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                    <DropdownMenuItem
-                        className="hover-menu-item"
-                        onClick={() => setSelectedGender("Male")}
-                    >
-                        Male
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                        className="hover-menu-item"
-                        onClick={() => setSelectedGender("Female")}
-                    >
-                        Female
-                    </DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
+            <select
+                title="Gender"
+                name="gender"
+                id="gender"
+                className="col-span-3 rounded-md border bg-background p-2 text-foreground focus:ring-0"
+                value={selectedGender}
+                onChange={(e) => setSelectedGender(e.target.value)}
+            >
+                <option value="" className="text-center justify-center">
+                    Select Gender
+                </option>
+                <option value="Male" className="text-center justify-center">
+                    Male
+                </option>
+                <option value="Female" className="text-center justify-center">
+                    Female
+                </option>
+            </select>
         </div>
     );
 };

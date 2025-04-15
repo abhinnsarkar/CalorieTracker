@@ -112,17 +112,17 @@ export default function ProfileSetupDialog() {
     };
 
     return (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <Dialog open={isOpen} modal>
             {" "}
             {/* Control dialog visibility */}
-            <DialogContent className="sm:max-w-[425px] hover-dialog p-4 shadow-lg">
+            <DialogContent className="w-[90%] lg:w-auto hover-dialog p-4 shadow-lg">
                 <DialogHeader>
-                    <DialogTitle className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
+                    <DialogTitle className="flex justify-start text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
                         {/* <h2 className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent"> */}
                         Complete your profile
                         {/* </h2> */}
                     </DialogTitle>
-                    <DialogDescription>
+                    <DialogDescription className="flex justify-start ">
                         Fill in your details to set up your profile.
                     </DialogDescription>
                 </DialogHeader>

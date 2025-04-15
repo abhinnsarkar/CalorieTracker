@@ -143,7 +143,7 @@ export default function BirthdayPicker({
     };
 
     return (
-        <div className="grid grid-cols-4 items-center gap-4">
+        <div className="grid grid-cols-4 items-center gap-4 ">
             <Label htmlFor="birthday" className="text-right">
                 Birthday
             </Label>
@@ -152,11 +152,13 @@ export default function BirthdayPicker({
                     <Button
                         variant={"outline"}
                         className={cn(
-                            "w-[280px] justify-start text-left font-normal",
+                            "w-full col-span-3 justify-start text-left font-normal",
                             !date && "text-muted-foreground"
                         )}
                     >
-                        <span className="flex justify-center w-full">
+                        {/* <span className="flex justify-center w-full bg-green-300"> */}
+                        {/* <span className="w-auto bg-green-300 grid col-span-3 rounded-md border bg-background p-2 text-foreground focus:ring-0"> */}
+                        <span className="w-full  flex flex-row justify-center items-center">
                             <CalendarIcon className="mr-2 h-4 w-4" />
                             {savedBirthday ? (
                                 format(savedBirthday, "PPP")

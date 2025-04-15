@@ -39,7 +39,6 @@ export default function Public() {
                                                 card: {
                                                     backgroundColor:
                                                         "hsl(var(--accent))",
-                                                    border: "1px solid rgba(255, 255, 255, 0.15)",
                                                     borderRadius: "12px",
                                                     padding: "1.25rem",
                                                     animation:
@@ -57,31 +56,72 @@ export default function Public() {
                                                     backgroundColor:
                                                         "transparent",
                                                     color: "white",
-                                                    border: "1px solid rgba(255,255,255,0.2)",
+                                                    border: "1px solid white",
+                                                    outline:
+                                                        "2px solid rgba(255,255,255,0.4)",
                                                     borderRadius: "8px",
                                                     padding: "0.75rem",
                                                     boxShadow:
-                                                        "0 0 8px rgba(255,255,255,0.2)",
+                                                        "0 0 10px rgba(255,255,255,0.3)",
+                                                    "&:hover": {
+                                                        transform:
+                                                            "scale(1.025)",
+                                                        boxShadow:
+                                                            "0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.3)",
+                                                    },
                                                 },
                                                 formFieldLabel: {
                                                     color: "hsl(var(--foreground))",
                                                 },
                                                 formButtonPrimary: {
-                                                    backgroundColor: "#10b981",
-                                                    color: "#fff",
+                                                    backgroundColor:
+                                                        "hsl(var(--accent))", // keep your dark navy color
+                                                    color: "white",
+                                                    border: "1px solid white",
+                                                    outline:
+                                                        "2px solid rgba(255,255,255,0.4)",
                                                     borderRadius: "8px",
                                                     padding: "0.75rem",
                                                     fontWeight: "600",
+                                                    transition:
+                                                        "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
                                                     boxShadow:
-                                                        "0 0 12px rgba(255, 255, 255, 0.5)",
+                                                        "0 0 10px rgba(255,255,255,0.6), 0 0 10px rgba(255,255,255,0.5)",
+                                                    "&:hover": {
+                                                        backgroundColor:
+                                                            "hsl(var(--accent))", // <- explicitly keep background the same
+                                                        transform:
+                                                            "scale(1.025)",
+                                                        boxShadow:
+                                                            "0 0 15px rgba(255,255,255,0.8), 0 0 15px rgba(255,255,255,0.6)",
+                                                    },
                                                 },
                                                 socialButtonsBlockButton: {
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
                                                     backgroundColor:
-                                                        "transparent",
-                                                    border: "1px solid rgba(255, 255, 255, 0.2)",
-                                                    color: "#fff",
+                                                        "hsl(var(--accent))",
+                                                    // "var(--accent)",
+                                                    border: "1px solid white",
+                                                    outline:
+                                                        "2px solid rgba(255,255,255,0.4)",
+                                                    borderRadius: "8px",
+                                                    padding: "0.75rem 1.5rem",
+                                                    fontWeight: "600",
+                                                    textAlign: "center",
+                                                    color: "white",
+                                                    cursor: "pointer",
+                                                    transition:
+                                                        "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
                                                     boxShadow:
-                                                        "0 0 8px rgba(255,255,255,0.3)",
+                                                        "0 0 10px rgba(255, 255, 255, 0.6), 0 0 10px rgba(255, 255, 255, 0.5)",
+                                                    "&:hover": {
+                                                        transform:
+                                                            "scale(1.025)",
+                                                        boxShadow:
+                                                            "0 0 15px rgba(255,255,255,0.8), 0 0 15px rgba(255,255,255,0.6)",
+                                                    },
                                                 },
                                                 footerActionText: {
                                                     color: "rgba(255,255,255,0.6)",
@@ -93,10 +133,6 @@ export default function Public() {
                                                 footer: {
                                                     display: "none",
                                                 },
-                                                // footer: {
-                                                //     className:
-                                                //         "bg-[hsl(var(--accent))] border-t border-white/10 text-[hsl(var(--foreground))] pt-4 shadow-[0_0_15px_rgba(255,255,255,0.5)]",
-                                                // },
                                             },
                                         }}
                                     >
@@ -126,43 +162,79 @@ export default function Public() {
                                                     fontWeight: "600",
                                                 },
                                                 formFieldInput: {
+                                                    display: "flex",
+                                                    flexDirection: "column",
                                                     backgroundColor:
-                                                        "transparent",
-                                                    color: "white",
-                                                    border: "1px solid rgba(255,255,255,0.2)",
+                                                        "hsl(var(--accent))",
+                                                    // "var(--accent)",
+                                                    border: "1px solid white",
+                                                    outline:
+                                                        "2px solid rgba(255,255,255,0.4)",
                                                     borderRadius: "8px",
-                                                    padding: "0.75rem",
+                                                    color: "white",
+
+                                                    animation:
+                                                        "fadeIn 0.5s ease-out",
+                                                    padding: "1rem",
+                                                    transition:
+                                                        "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
                                                     boxShadow:
-                                                        "0 0 8px rgba(255,255,255,0.2)",
+                                                        "0 0 10px rgba(255,255,255,0.4), 0 0 10px rgba(255,255,255,0.3)",
+                                                    "&:hover": {
+                                                        transform:
+                                                            "scale(1.025)",
+                                                        boxShadow:
+                                                            "0 0 15px rgba(255, 255, 255, 0.4), 0 0 15px rgba(255, 255, 255, 0.3)",
+                                                    },
                                                 },
                                                 formFieldLabel: {
                                                     color: "hsl(var(--foreground))",
                                                 },
                                                 formButtonPrimary: {
-                                                    backgroundColor: "#10b981",
-                                                    color: "#fff",
+                                                    backgroundColor:
+                                                        "hsl(var(--accent))", // keep your dark navy color
+                                                    color: "white",
+                                                    border: "1px solid white",
+                                                    outline:
+                                                        "2px solid rgba(255,255,255,0.4)",
                                                     borderRadius: "8px",
                                                     padding: "0.75rem",
                                                     fontWeight: "600",
+                                                    transition:
+                                                        "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
                                                     boxShadow:
-                                                        "0 0 12px rgba(255, 255, 255, 0.5)",
+                                                        "0 0 10px rgba(255,255,255,0.6), 0 0 10px rgba(255,255,255,0.5)",
+                                                    "&:hover": {
+                                                        backgroundColor:
+                                                            "hsl(var(--accent))", // <- explicitly keep background the same
+                                                        transform:
+                                                            "scale(1.025)",
+                                                        boxShadow:
+                                                            "0 0 15px rgba(255,255,255,0.8), 0 0 15px rgba(255,255,255,0.6)",
+                                                    },
                                                 },
                                                 socialButtonsBlockButton: {
                                                     backgroundColor:
-                                                        "transparent",
-                                                    border: "1px solid rgba(255, 255, 255, 0.2)",
-                                                    color: "#fff",
-                                                    boxShadow:
-                                                        "0 0 8px rgba(255,255,255,0.3)",
-                                                },
-                                                footerActionText: {
-                                                    color: "rgba(255,255,255,0.6)",
-                                                },
-                                                footerActionLink: {
-                                                    color: "#3b82f6",
-                                                    fontWeight: "500",
-                                                },
+                                                        "hsl(var(--accent))",
+                                                    // "var(--accent)",
+                                                    border: "1px solid white",
+                                                    outline:
+                                                        "2px solid rgba(255,255,255,0.4)",
+                                                    borderRadius: "8px",
+                                                    color: "white",
 
+                                                    padding: "0.75rem",
+                                                    transition:
+                                                        "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+                                                    boxShadow:
+                                                        "0 0 10px rgba(255,255,255,0.4), 0 0 10px rgba(255,255,255,0.3)",
+                                                    "&:hover": {
+                                                        transform:
+                                                            "scale(1.025)",
+                                                        boxShadow:
+                                                            "0 0 15px rgba(255,255,255,0.4), 0 0 15px rgba(255,255,255,0.3)",
+                                                    },
+                                                },
                                                 footer: {
                                                     display: "none",
                                                 },

@@ -42,10 +42,10 @@ export default function Page() {
         <main className="container mx-auto layout-x-padding pt-20">
             <div className="justify-start">
                 <Button
-                    className="hover-btn w-full !justify-start sm:!w-auto "
+                    className="hover-btn w-full lg:w-auto !justify-start"
                     onClick={handleBackToDashboard}
                 >
-                    <div className="sm:justify-start">
+                    <div className="lg:justify-start">
                         <ArrowBackIosIcon />
                         Back to Dashboard
                     </div>
@@ -60,7 +60,7 @@ export default function Page() {
 
             <div className="space-y-4 w-full">
                 {/* Desktop Grid */}
-                <div className="hidden sm:grid grid-cols-[repeat(26,_minmax(0,_1fr))] w-full">
+                <div className="hidden xl:grid grid-cols-[repeat(26,_minmax(0,_1fr))] gap-2 w-full">
                     {alphabet.map((letter) => (
                         <div
                             key={letter}
@@ -77,44 +77,44 @@ export default function Page() {
                         </div>
                     ))}
                 </div>
-
-                {/* Mobile Dropdown */}
-                <div className="sm:hidden w-full">
-                    <select
-                        id="letter"
-                        name="letter"
-                        title="Filter by letter"
-                        className="w-full p-3 rounded bg-slate-800 text-white border border-white/10"
-                        onChange={(e) => filterFoods(e.target.value)}
-                        value={selectedLetter ?? ""}
-                    >
-                        <option value="">Select Letter</option>
-                        {alphabet.map((letter) => (
-                            <option key={letter} value={letter}>
-                                {letter}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
-                {selectedLetter && (
-                    <button
-                        onClick={() => {
-                            setFoods(allFoods);
-                            setSelectedLetter(null);
-                        }}
-                        className="text-sm underline text-blue-300"
-                    >
-                        Clear Filter
-                    </button>
-                )}
-
-                <br />
-
-                {foods.map((food) => (
-                    <AllFoodsListItem key={food.food_id} food={food} />
-                ))}
             </div>
+
+            {/* Mobile Dropdown */}
+            <div className="xl:hidden w-full">
+                <select
+                    id="letter"
+                    name="letter"
+                    title="Filter by letter"
+                    className="w-full p-3 rounded bg-slate-800 text-white border border-white/10"
+                    onChange={(e) => filterFoods(e.target.value)}
+                    value={selectedLetter ?? ""}
+                >
+                    <option value="">Filter by Letter</option>
+                    {alphabet.map((letter) => (
+                        <option key={letter} value={letter}>
+                            {letter}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
+            {selectedLetter && (
+                <button
+                    onClick={() => {
+                        setFoods(allFoods);
+                        setSelectedLetter(null);
+                    }}
+                    className="text-sm underline text-blue-300"
+                >
+                    Clear Filter
+                </button>
+            )}
+
+            <br />
+
+            {foods.map((food) => (
+                <AllFoodsListItem key={food.food_id} food={food} />
+            ))}
         </main>
     );
 }

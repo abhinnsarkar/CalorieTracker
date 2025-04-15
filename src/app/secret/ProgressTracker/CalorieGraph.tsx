@@ -39,6 +39,13 @@ const chartConfig = {
 
 export default function CalorieGraph() {
     const [entries, setEntries] = useState<CaloricConsumptionInterface[]>([]);
+
+    const isLoadProfileAfterSetup = useStore(
+        (state) => state.isLoadProfileAfterSetup
+    );
+    const setIsLoadProfileAfterSetup = useStore(
+        (state) => state.setIsLoadProfileAfterSetup
+    );
     const isReloadCalorieGraph = useStore(
         (state) => state.isReloadCalorieGraph
     );
@@ -74,7 +81,7 @@ export default function CalorieGraph() {
     }, []);
 
     useEffect(() => {
-        if (isReloadCalorieGraph) {
+        if (isReloadCalorieGraph || isLoadProfileAfterSetup) {
             async function refreshData() {
                 const rawEntries = await getPreviousWeeksCaloricConsumption();
                 const maintenanceCaloriesObj = await getMaintenanceCalories();
@@ -99,11 +106,17 @@ export default function CalorieGraph() {
                 }
                 setEntries(fullWeek);
                 setIsReloadCalorieGraph(false); // ✅ reset flag
+                setIsLoadProfileAfterSetup(false);
             }
 
             refreshData();
         }
-    }, [isReloadCalorieGraph, setIsReloadCalorieGraph]);
+    }, [
+        isReloadCalorieGraph,
+        setIsReloadCalorieGraph,
+        isLoadProfileAfterSetup,
+        setIsLoadProfileAfterSetup,
+    ]);
 
     return (
         <>
