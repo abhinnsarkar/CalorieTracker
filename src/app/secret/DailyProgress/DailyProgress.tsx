@@ -217,9 +217,12 @@ export default function DailyProgress() {
     );
 
     const fetchNutritionStats = async () => {
+        console.log("Fetching Nutrition Stats logggg");
         const data = await getUserCurrentNutritionRequirements();
 
         if (data) {
+            console.log("Fetched Nutrition Stats logggg", data);
+            console.log("Nutrition Stats", data);
             setNutritionRequirements({
                 maintenance_calories: data.maintenance_calories,
                 protein: data.protein,
@@ -233,6 +236,8 @@ export default function DailyProgress() {
             });
 
             const totals = await getTodaysFoodTotals();
+            console.log("Fetched Todays Food Totals logggg", totals);
+            console.log("Todays Food Totals", totals);
             setTodaysTotals(totals);
 
             const maintenance = data.maintenance_calories || 0;
@@ -251,6 +256,7 @@ export default function DailyProgress() {
     // ✅ Re-fetch on Zustand trigger
     useEffect(() => {
         if (isReloadTodaysProgress || isLoadProfileAfterSetup) {
+            console.log("Reloading Daily Progress");
             fetchNutritionStats();
             setIsReloadTodaysProgress(false);
             setIsLoadProfileAfterSetup(false);

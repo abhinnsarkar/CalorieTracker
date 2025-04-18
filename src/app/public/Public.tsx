@@ -47,11 +47,32 @@ export default function Public() {
                                                         "0 0 12px rgba(255, 255, 255, 0.4), 0 0 20px rgba(255, 255, 255, 0.2)",
                                                     color: "hsl(var(--foreground))",
                                                 },
+                                                otpCodeFieldInput: {
+                                                    backgroundColor:
+                                                        "transparent",
+                                                    color: "white",
+                                                    border: "1px solid white",
+                                                    borderRadius: "8px",
+                                                    // padding: "0.75rem",
+                                                    // fontSize: "1.25rem", // ✨ add this
+                                                    // lineHeight: "1.5rem", // ✨ and this
+                                                    outline:
+                                                        "2px solid rgba(255,255,255,0.4)",
+                                                    boxShadow:
+                                                        "0 0 10px rgba(255,255,255,0.3)",
+                                                    "&:hover": {
+                                                        transform:
+                                                            "scale(1.025)",
+                                                        boxShadow:
+                                                            "0 0 15px rgba(255,255,255,0.4), 0 0 15px rgba(255,255,255,0.3)",
+                                                    },
+                                                },
                                                 headerTitle: {
                                                     color: "white",
                                                     fontSize: "1.25rem",
                                                     fontWeight: "600",
                                                 },
+
                                                 formFieldInput: {
                                                     backgroundColor:
                                                         "transparent",

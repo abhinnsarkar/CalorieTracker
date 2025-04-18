@@ -22,7 +22,7 @@ function AllFoodsListItem({ food }: { food: FoodItemInterface }) {
     };
 
     return (
-        <div className="hover-card border flex flex-col layout-x-padding !my-4">
+        <div className="hover-card border flex flex-col layout-x-padding !my-2">
             <div className="w-full">
                 <div className="flex flex-row w-full flex-wrap md:flex-nowrap">
                     <div className="flex flex-col space-y-1 w-1/2 md:w-1/4 ">

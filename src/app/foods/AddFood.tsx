@@ -14,10 +14,7 @@ function AddFood({ food }: { food: FoodItemInterface }) {
 
     return (
         <>
-            <AddIcon
-                className="hover-icon cursor-pointer"
-                onClick={handleClick}
-            />
+            <AddIcon className="hover-icon font-bold" onClick={handleClick} />
             <FoodLogDialog
                 open={dialogOpen}
                 onOpenChange={setDialogOpen}

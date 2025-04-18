@@ -44,13 +44,13 @@ export default function Page() {
     if (!food) return <div className="p-8">Food not found.</div>;
 
     return (
-        <div className="min-h-screen bg-background text-foreground">
+        <main className="layout-grid layout-grid-1 px-4 sm:px-6 md:px-10 pt-20 text-foreground space-y-4 lg:space-y-8">
             {/* Header */}
-            <div className="w-full px-4 md:px-12 pt-20 flex justify-center">
+            <div className="w-full">
                 <div className="flex justify-between items-center w-full max-w-7xl">
                     <div className="w-full flex !justify-start lg:justify-center text-left lg:text-center">
                         <Button
-                            className="hover-btn w-full lg:w-auto  !justify-start"
+                            className="hover-btn w-full xs:w-auto"
                             onClick={handleBack}
                         >
                             <ArrowBackIosIcon />
@@ -66,20 +66,20 @@ export default function Page() {
             </div>
 
             {/* Title */}
-            <div className="py-4 px-4 md:px-12">
+            <div className="py-4">
                 <h1 className="!text-3xl !font-bold gradient-text justify-center">
                     {food.food_name}
                 </h1>
             </div>
 
             {/* Content */}
-            <div className="w-full px-4 md:px-12 py-8 flex justify-center">
-                <div className="flex flex-col md:flex-row gap-6 max-w-7xl w-full h-[75vh]">
+            <div className="py-8">
+                <div className="layout-grid layout-grid-1 lg:layout-grid-3 gap-6 h-[75vh]">
                     <Column1 food={food} />
                     <Column2 food={food} />
                     <Column3 food={food} />
                 </div>
             </div>
-        </div>
+        </main>
     );
 }

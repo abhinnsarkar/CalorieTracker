@@ -120,8 +120,8 @@ export default function CalorieGraph() {
 
     return (
         <>
-            <Card className="hover-card">
-                <Card className="hover-card h-full">
+            <Card className="hover-card h-full flex justify-between">
+                <Card className="h-1/2 border-none">
                     <h2 className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">
                         Progress Tracker
                     </h2>
@@ -197,7 +197,7 @@ export default function CalorieGraph() {
                     </CardContent>
                 </Card>
 
-                <Card className="hover-card mt-2">
+                <Card className=" border-none">
                     <BodyStats />
                     <EditBodyInformation />
                 </Card>

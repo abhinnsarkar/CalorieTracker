@@ -61,7 +61,10 @@ export default function FoodSearch() {
                 Food Search
             </h2>
             <br />
-            <Button onClick={handleNavigate} className="hover-btn w-full my-2">
+            <Button
+                onClick={handleNavigate}
+                className="hover-btn w-full my-2 cursor-auto"
+            >
                 View All Foods <OpenInNewIcon />
             </Button>
 
@@ -77,7 +80,7 @@ export default function FoodSearch() {
                     />
                 </div>
 
-                <div className="mt-2 sm:mt-10 flex justify-center items-center sm:absolute sm:inset-0 sm:h-[95%]">
+                <div className="mt-2 flex justify-center items-center">
                     {isDropdownOpen && filteredFoods.length > 0 && (
                         <FoodSearchList
                             filteredFoods={filteredFoods}

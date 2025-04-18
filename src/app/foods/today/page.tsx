@@ -21,7 +21,11 @@ export default function Page() {
 
     // ✅ Fetch once on page load
     useEffect(() => {
-        getTodaysFoodEntries().then((data) => setEntries(data));
+        getTodaysFoodEntries().then((data) => {
+            console.log(data);
+            setEntries(data);
+        });
+        console.log("FetchED today's food entries...");
     }, []);
 
     // ✅ Re-fetch if reload is triggered from elsewhere
@@ -36,10 +40,10 @@ export default function Page() {
     }, [isReloadTodaysLoggedFoods, setIsReloadTodaysLoggedFoods]);
 
     return (
-        <main className="container mx-auto px-4 pt-20 text-white space-y-4 lg:space-y-8">
+        <main className="layout-grid layout-grid-1 px-4 sm:px-6 md:px-10 pt-20 text-white space-y-4 lg:space-y-8">
             <div className="justify-start">
                 <Link href="/">
-                    <Button className="hover-btn w-full lg:w-auto">
+                    <Button className="hover-btn w-full xs:w-auto">
                         <ArrowBackIosIcon />
                         <span className="text-left lg:text-center w-full">
                             Back to Dashboard

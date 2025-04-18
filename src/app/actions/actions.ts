@@ -215,6 +215,7 @@ export async function getUserCurrentBodyStats() {
 
 export async function getUserCurrentNutritionRequirements() {
     try {
+        console.log("Fetching user nutrition stats for today...");
         const user = await currentUser();
         const userId = user?.id as string;
         const userProfile = await prisma.users.findUnique({
@@ -233,6 +234,8 @@ export async function getUserCurrentNutritionRequirements() {
                 iron: true,
             },
         });
+
+        console.log("User profile:", userProfile);
 
         if (userProfile) {
             return {
@@ -563,8 +566,11 @@ export async function logFoodEntry({
     }
 
     const now = new Date();
-    const offsetMs = now.getTimezoneOffset() * 60 * 1000;
-    const localDate = new Date(now.getTime() - offsetMs);
+    const localDate = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate()
+    );
 
     try {
         await prisma.userFoods.create({
@@ -611,15 +617,18 @@ export async function getTodaysFoodEntries(): Promise<
         const userFoodEntries = await prisma.userFoods.findMany({
             where: {
                 user_id: userId,
-                date_logged: {
-                    gte: startOfToday,
-                    lt: startOfTomorrow,
-                },
+                // date_logged: {
+                //     gte: startOfToday,
+                //     lt: startOfTomorrow,
+                // },
             },
             include: {
                 food: true,
             },
         });
+        console.log("userFoodEntries", userFoodEntries);
+        console.log("startOfToday", startOfToday);
+        console.log("startOfTomorrow", startOfTomorrow);
 
         const todaysEntries: TodaysFoodEntryInterface[] = userFoodEntries.map(
             (entry) => {
@@ -652,7 +661,9 @@ export async function getTodaysFoodEntries(): Promise<
 
 export async function getTodaysFoodTotals(): Promise<TodaysFoodToalsInterface> {
     try {
+        console.log("Fetching today's food totals...");
         const todaysFoodEntries = await getTodaysFoodEntries();
+        console.log("Today's food entries:", todaysFoodEntries);
 
         const totals = {
             calories: 0,

@@ -109,6 +109,7 @@
 .hover-icon {
     transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
     filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.7));
+    cursor: pointer;
 }
 
 .hover-icon:hover {
@@ -288,7 +289,26 @@
 }
 @layer components {
     .layout-x-padding {
-        @apply px-4 sm:px-6 md:px-10;
+        @apply px-0;
+    }
+    .layout-grid {
+        @apply layout-x-padding max-w-screen-xl mx-auto w-full grid gap-4;
+        grid-template-columns: 1fr;
+    }
+
+    @screen md {
+        .layout-grid-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    .layout-grid-1 {
+        grid-template-columns: 1fr;
+    }
+
+    .layout-section {
+        /* @apply w-full bg-card p-4 rounded-lg shadow-md; */
+        @apply w-full bg-card;
     }
 }
 

@@ -119,12 +119,15 @@ export default function EditBodyInformation() {
 
     return (
         <>
-            <Button className="hover-btn" onClick={() => setFormOpen(true)}>
+            <Button
+                className="hover-btn w-full"
+                onClick={() => setFormOpen(true)}
+            >
                 Edit Profile
             </Button>
             <Dialog open={formOpen || false}>
                 {/* <DialogContent className="sm:max-w-[425px] hover-dialog bg-white p-4 shadow-lg"> */}
-                <DialogContent className="hover-dialog !w-[90%] sm:w-full">
+                <DialogContent className="hover-dialog w-[95%] h-[95%] mx-auto my-auto sm:h-auto sm:max-w-md sm:rounded-lg">
                     <DialogHeader>
                         <div className="flex flex-row justify-between">
                             <DialogTitle className="text-xl font-semibold bg-gradient-to-r from-blue-300 to-blue-100 bg-clip-text text-transparent">

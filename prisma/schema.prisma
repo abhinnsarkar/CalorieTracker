@@ -52,7 +52,7 @@ model userFoods {
   id          String   @id @default(uuid())
   user_id     String
   food_id     String
-  date_logged DateTime @default(now())
+  date_logged DateTime @db.Date
   quantity    Decimal  @db.Decimal(5, 2)
 
   user users @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
