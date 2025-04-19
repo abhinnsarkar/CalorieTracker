@@ -22,10 +22,8 @@ export default function Page() {
     // ✅ Fetch once on page load
     useEffect(() => {
         getTodaysFoodEntries().then((data) => {
-            console.log(data);
             setEntries(data);
         });
-        console.log("FetchED today's food entries...");
     }, []);
 
     // ✅ Re-fetch if reload is triggered from elsewhere

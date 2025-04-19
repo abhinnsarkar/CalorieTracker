@@ -10,6 +10,18 @@ import {
     CaloricConsumptionInterface,
 } from "@/app/interfaces";
 
+export async function getClerkUserInfo(): Promise<string> {
+    const user = await currentUser();
+
+    if (!user) {
+        throw new Error("User not authenticated");
+    }
+
+    const userId = user.id;
+    console.log("User ID:", userId);
+    return userId;
+}
+
 export async function capitalizeFirstLetter(value: string): Promise<string> {
     return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
 }
@@ -32,8 +44,6 @@ export async function createUser(formData: FormData): Promise<boolean> {
         | "moderate"
         | "active"
         | "superactive";
-
-    console.log("activity_level", activity_level);
 
     const parsedDob = dob ? new Date(dob) : null;
     const age = parsedDob
@@ -66,14 +76,8 @@ export async function createUser(formData: FormData): Promise<boolean> {
                 return 1.2;
         }
     })();
-    console.log(
-        "normalizedActivityLevelMultiplier",
-        normalizedActivityLevelMultiplier
-    );
-    console.log("bmr", bmr);
 
     let maintenance_calories = bmr * normalizedActivityLevelMultiplier;
-    console.log("maintenance_calories", maintenance_calories);
 
     if (objective === "bulking") maintenance_calories += 500;
     if (objective === "cutting") maintenance_calories -= 500;
@@ -130,7 +134,7 @@ export async function createUser(formData: FormData): Promise<boolean> {
 
     try {
         // Create user in the database
-        const user = await prisma.users.create({
+        await prisma.users.create({
             data: {
                 user_id: userId,
                 dob: parsedDob,
@@ -152,7 +156,6 @@ export async function createUser(formData: FormData): Promise<boolean> {
             },
         });
 
-        console.log("User created:", user);
         revalidatePath("/");
         return true;
     } catch (err) {
@@ -215,7 +218,6 @@ export async function getUserCurrentBodyStats() {
 
 export async function getUserCurrentNutritionRequirements() {
     try {
-        console.log("Fetching user nutrition stats for today...");
         const user = await currentUser();
         const userId = user?.id as string;
         const userProfile = await prisma.users.findUnique({
@@ -234,8 +236,6 @@ export async function getUserCurrentNutritionRequirements() {
                 iron: true,
             },
         });
-
-        console.log("User profile:", userProfile);
 
         if (userProfile) {
             return {
@@ -274,8 +274,6 @@ export async function updateUserProfile(formData: FormData): Promise<boolean> {
     // Parsing height and weight
     const height_cm = parseFloat(formData.get("height") as string);
     const weight_kg = parseFloat(formData.get("weight") as string);
-
-    console.log("formData", formData);
 
     // Handle the objective as a lowercase value for validation
     const objective = (formData.get("objective") as string)?.toLowerCase();
@@ -410,22 +408,6 @@ export async function updateUserProfile(formData: FormData): Promise<boolean> {
     const sodium = 2300;
     const potassium = gender === "male" ? 3400 : 2600;
     const iron = gender === "male" ? 8 : 18;
-
-    console.log("Updated values:");
-    console.log("height_cm", height_cm);
-    console.log("weight_kg", weight_kg);
-    console.log("objective", originalObjective);
-    console.log("activity_level", normalizedActivityLevel);
-    console.log("activity_level_multiplier", normalizedActivityLevelMultiplier);
-    console.log("maintenance_calories", maintenance_calories);
-    console.log("protein", protein);
-    console.log("fats", fats);
-    console.log("carbs", carbs);
-    console.log("fiber", fiber);
-    console.log("sugar", sugar);
-    console.log("sodium", sodium);
-    console.log("potassium", potassium);
-    console.log("iron", iron);
 
     // Update the user profile in the database with recalculated values
     try {
@@ -617,18 +599,15 @@ export async function getTodaysFoodEntries(): Promise<
         const userFoodEntries = await prisma.userFoods.findMany({
             where: {
                 user_id: userId,
-                // date_logged: {
-                //     gte: startOfToday,
-                //     lt: startOfTomorrow,
-                // },
+                date_logged: {
+                    gte: startOfToday,
+                    lt: startOfTomorrow,
+                },
             },
             include: {
                 food: true,
             },
         });
-        console.log("userFoodEntries", userFoodEntries);
-        console.log("startOfToday", startOfToday);
-        console.log("startOfTomorrow", startOfTomorrow);
 
         const todaysEntries: TodaysFoodEntryInterface[] = userFoodEntries.map(
             (entry) => {
@@ -661,9 +640,7 @@ export async function getTodaysFoodEntries(): Promise<
 
 export async function getTodaysFoodTotals(): Promise<TodaysFoodToalsInterface> {
     try {
-        console.log("Fetching today's food totals...");
         const todaysFoodEntries = await getTodaysFoodEntries();
-        console.log("Today's food entries:", todaysFoodEntries);
 
         const totals = {
             calories: 0,

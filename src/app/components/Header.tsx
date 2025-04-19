@@ -73,7 +73,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import icon from "./icon.png";
+import icon from "../../../public/icon.png";
 import { SignedIn, UserButton } from "@clerk/nextjs";
 
 export default function Header() {
