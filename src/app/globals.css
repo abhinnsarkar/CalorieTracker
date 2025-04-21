@@ -92,7 +92,7 @@
     font-weight: 600;
     text-align: center;
     color: white; /* Keeps text color consistent */
-    cursor: pointer;
+    /* cursor: auto; */
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.6),
         0 0 10px rgba(255, 255, 255, 0.5); /* Increased initial glow */
@@ -287,6 +287,18 @@
     scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
     scrollbar-width: thin;
 }
+
+/* Use grabbing cursor on all hover items .hover-btn:hover,
+.hover-card:hover,
+.hover-icon:hover,
+.hover-dialog:hover,
+.hover-menu-item:hover,
+.hover-tab:hover,
+.hover-card-input:hover,
+.hover-card-input:focus,
+.hover-card-input:active {
+    cursor: grab;
+} */
 @layer components {
     .layout-x-padding {
         @apply px-0;

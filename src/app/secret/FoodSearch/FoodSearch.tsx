@@ -63,7 +63,8 @@ export default function FoodSearch() {
             <br />
             <Button
                 onClick={handleNavigate}
-                className="hover-btn w-full my-2 cursor-auto"
+                // className="hover-btn w-full my-2 cursor-auto"
+                className="hover-btn w-full my-2"
             >
                 View All Foods <OpenInNewIcon />
             </Button>
