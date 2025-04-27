@@ -555,6 +555,7 @@ export async function logFoodEntry({
     //     now.getMonth(),
     //     now.getDate()
     // );
+    const localDate = new Date(date);
 
     try {
         await prisma.userFoods.create({
@@ -562,7 +563,7 @@ export async function logFoodEntry({
                 user_id: userId,
                 food_id: food_id,
                 quantity: quantity,
-                date_logged: date,
+                date_logged: localDate,
             },
         });
 
