@@ -46,9 +46,12 @@ export default function FoodLogDialog({
 
     const handleLogFood = async () => {
         if (!food) return;
+        const today = new Date();
+        const localDateString = today.toISOString().split("T")[0];
         const success = await logFoodEntry({
             food_id: food.food_id,
             quantity,
+            date: localDateString,
         });
 
         if (success) {

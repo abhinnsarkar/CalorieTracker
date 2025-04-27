@@ -536,9 +536,11 @@ export async function getFoodById(foodId: string) {
 export async function logFoodEntry({
     food_id,
     quantity,
+    date,
 }: {
     food_id: string;
     quantity: number;
+    date: string;
 }) {
     const user = await currentUser();
     const userId = user?.id as string;
@@ -547,12 +549,12 @@ export async function logFoodEntry({
         throw new Error("User not found");
     }
 
-    const now = new Date();
-    const localDate = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate()
-    );
+    // const now = new Date();
+    // const localDate = new Date(
+    //     now.getFullYear(),
+    //     now.getMonth(),
+    //     now.getDate()
+    // );
 
     try {
         await prisma.userFoods.create({
@@ -560,7 +562,7 @@ export async function logFoodEntry({
                 user_id: userId,
                 food_id: food_id,
                 quantity: quantity,
-                date_logged: localDate,
+                date_logged: date,
             },
         });
 
