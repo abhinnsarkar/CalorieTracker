@@ -83,6 +83,10 @@ export default function CalorieGraph() {
     useEffect(() => {
         if (isReloadCalorieGraph || isLoadProfileAfterSetup) {
             async function refreshData() {
+                console.log("Refreshing calorie graph data...");
+                console.log(
+                    "Refreshing calorie graph data due to state change..."
+                );
                 const rawEntries = await getPreviousWeeksCaloricConsumption();
                 const maintenanceCaloriesObj = await getMaintenanceCalories();
                 const maintenanceCalories =

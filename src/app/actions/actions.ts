@@ -790,6 +790,8 @@ export async function getPreviousWeeksCaloricConsumption(): Promise<
             calories,
         }));
 
+        console.log("Todays food entries:", result);
+
         return result;
     } catch (error) {
         console.error("Error fetching todays food entries:", error);
