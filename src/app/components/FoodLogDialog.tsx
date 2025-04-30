@@ -48,6 +48,9 @@ export default function FoodLogDialog({
         if (!food) return;
         const today = new Date();
         const localDateString = today.toISOString().split("T")[0];
+
+        console.log("date of food log entry", localDateString);
+
         const success = await logFoodEntry({
             food_id: food.food_id,
             quantity,
