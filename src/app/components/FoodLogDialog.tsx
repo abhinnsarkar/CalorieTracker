@@ -56,7 +56,11 @@ export default function FoodLogDialog({
 
         if (success) {
             setIsReloadTodaysProgress(true);
+            console.log("Reloading todays progress from food log dialog");
+
             setIsReloadCalorieGraph(true);
+            console.log("Reloading calorie graph from food log dialog");
+
             close();
             RenderNotification({
                 title: "Food Logged",
