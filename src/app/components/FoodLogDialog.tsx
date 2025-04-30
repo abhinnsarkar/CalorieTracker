@@ -47,7 +47,12 @@ export default function FoodLogDialog({
     const handleLogFood = async () => {
         if (!food) return;
         const today = new Date();
-        const localDateString = today.toISOString().split("T")[0];
+        const localDateString =
+            today.getFullYear() +
+            "-" +
+            String(today.getMonth() + 1).padStart(2, "0") +
+            "-" +
+            String(today.getDate()).padStart(2, "0");
 
         console.log("date of food log entry", localDateString);
 
